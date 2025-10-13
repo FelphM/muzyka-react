@@ -5,6 +5,8 @@ import "./App.css"
 import "./Cart.css"
 import { CardProduct, type Product } from './CardProduct.tsx'
 import { CardProductCart } from './CardProductCart.tsx'
+import { Footer } from './Footer.tsx'
+import { Header } from './Header.tsx'
 
 const bullets: Product = {
   soldOut: false,
@@ -22,8 +24,10 @@ const audioSlave: Product = {
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
+    <Header></Header>
     <CardProduct product={ bullets }></CardProduct>
     <CardProduct product={ audioSlave }></CardProduct>
     <CardProductCart product={ audioSlave }></CardProductCart>
+    <Footer></Footer>
   </StrictMode>,
 )
