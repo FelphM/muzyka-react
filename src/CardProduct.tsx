@@ -1,26 +1,6 @@
-export interface Product {
-    soldOut: boolean;
-    image: string;
-    title: string;
-    price: number;
-}
+import type { Product } from "./Product";
 
-export interface ProductDetails {
-    description: string,
-    Label: string,
-    Format: string,
-    Country?: string,
-    Released?: string,
-    Genre?: string,
-    Style?: string,
-}
-
-export interface ProductProperties {
-    product: Product;
-    productDetails?: ProductDetails
-}
-
-export function CardProduct({ product }: ProductProperties) {
+export function CardProduct({ product }: { product: Product }) {
     return (
         <article className="cardProduct">
             {product.soldOut && <p className="strike">sold-out</p>}

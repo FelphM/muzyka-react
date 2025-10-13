@@ -1,11 +1,11 @@
-import type { ProductProperties } from "./CardProduct";
+import type { Product } from "./Product";
 
-export function CardProductCart({ product }: ProductProperties) {
+export function CardProductCart({ product }: { product: Product}) {
     return (
         <>
             <article className="cardProductCart">
                 <figure>
-                    <img src="/img/billy_talent_ii_front.jpg" alt="" />
+                    <img src={product.image} alt="" />
                     <figcaption>
                         <a
                             href="https://www.discogs.com/release/727005-Billy-Talent-Billy-Talent-II"
@@ -13,15 +13,11 @@ export function CardProductCart({ product }: ProductProperties) {
                     </figcaption>
                 </figure>
                 <div className="product-details">
-                    <h2>Billy Talent II</h2>
-                    <h3>$15,990</h3>
+                    <h2>{product.title}</h2>
+                    <h3>${product.price}</h3>
                     <button>Quitar del carrito</button>
                     <p>
-                        Billy Talent II es el segundo álbum de estudio de la banda
-                        canadiense de punk rock Billy Talent, publicado el 27 de junio de
-                        2006. El álbum debutó en el número 1 en la Canadian Albums Chart,
-                        vendiendo 48.000 copias en su primera semana.​ El álbum también
-                        alcanzó el número 1 en las listas de álbumes de Alemania.
+                        {product.productDetails?.description}
                     </p>
                     <details>
                         <summary>Mas detalles</summary>
@@ -47,9 +43,6 @@ export function CardProductCart({ product }: ProductProperties) {
                     </details>
                 </div>
             </article>
-
-
-
         </>
     )
 }
