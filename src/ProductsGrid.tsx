@@ -8,7 +8,8 @@ export function ProductGrid({ products }: { products: Product[] }) {
                 {
                     products.map((product) => (
                         <CardProduct product={product}></CardProduct>)
-                    )}
+                    )
+                }
 
             </div>
         </>

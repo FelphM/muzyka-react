@@ -17,7 +17,7 @@ export function CardProductCart({ product }: { product: Product}) {
                     <h3>${product.price}</h3>
                     <button>Quitar del carrito</button>
                     <p>
-                        {product.productDetails?.description}
+                        {product.details?.description}
                     </p>
                     <details>
                         <summary>Mas detalles</summary>

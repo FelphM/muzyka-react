@@ -3,7 +3,7 @@ export type Product = {
     price: number
     soldOut: boolean
     image: string
-    productDetails?: ProductDetails
+    details?: ProductDetails
 }
 
 export interface ProductDetails {

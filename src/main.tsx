@@ -6,12 +6,12 @@ import { Footer } from './Footer.tsx'
 import { Header } from './Header.tsx'
 import { BubbleText } from './BubbleText.tsx'
 import { ProductGrid } from './ProductsGrid.tsx'
-import { AllProducts } from './_db.ts'
+import { TableProducts } from './_db.ts'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Header></Header>
-    <ProductGrid products={AllProducts}></ProductGrid>
+    <ProductGrid products={TableProducts}></ProductGrid>
     <BubbleText text='¿Tienes dudas? ¡Contactanos! ☆ Estamos para ayudarte ☆'></BubbleText>
     <Footer></Footer>
   </StrictMode>,

@@ -14,7 +14,11 @@ const audioSlave: Product = {
     price: 12990,
 }
 
-export const AllProducts: Product[] = [
+export const TableProducts: Product[] = [
+    bullets,
     audioSlave,
-    bullets
+]
+
+export const Tables: any[] = [
+    TableProducts
 ]
