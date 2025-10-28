@@ -1,29 +1,111 @@
-import { render, fireEvent } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+import '@testing-library/jest-dom';
 import { UsersPage } from '../src/pages/admin/Users';
+import { renderWithRouter } from './test-utils';
 
 describe('UsersPage Component', () => {
   it('should render users table correctly', () => {
-    const { getByText, getByPlaceholderText } = render(<UsersPage />);
+    renderWithRouter(<UsersPage />);
     
-    expect(getByText('User Management')).toBeInTheDocument();
-    expect(getByPlaceholderText('Search users...')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'User Management' })).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Search users...')).toBeInTheDocument();
+    expect(screen.getByRole('table')).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: 'Name' })).toBeInTheDocument();
   });
 
-  it('should filter users by search term', () => {
-    const { getByPlaceholderText, queryByText } = render(<UsersPage />);
-    
-    const searchInput = getByPlaceholderText('Search users...');
-    fireEvent.change(searchInput, { target: { value: 'John' } });
-    
-    expect(queryByText('John Doe')).toBeInTheDocument();
-    expect(queryByText('Admin User')).not.toBeInTheDocument();
+  describe('search functionality', () => {
+    it('should filter users by name', () => {
+      renderWithRouter(<UsersPage />);
+      
+      const searchInput = screen.getByPlaceholderText('Search users...');
+      fireEvent.change(searchInput, { target: { value: 'John' } });
+      
+      expect(screen.getByText('John Doe')).toBeInTheDocument();
+      expect(screen.queryByText('Admin User')).not.toBeInTheDocument();
+    });
+
+    it('should filter users by email', () => {
+      renderWithRouter(<UsersPage />);
+      
+      const searchInput = screen.getByPlaceholderText('Search users...');
+      fireEvent.change(searchInput, { target: { value: 'admin@muzyka' } });
+      
+      expect(screen.getByText('Admin User')).toBeInTheDocument();
+      expect(screen.queryByText('John Doe')).not.toBeInTheDocument();
+    });
+
+    it('should be case insensitive', () => {
+      renderWithRouter(<UsersPage />);
+      
+      const searchInput = screen.getByPlaceholderText('Search users...');
+      
+      // Test uppercase search
+      fireEvent.change(searchInput, { target: { value: 'JOHN' } });
+      expect(screen.getByText('John Doe')).toBeInTheDocument();
+      
+      // Test mixed case search
+      fireEvent.change(searchInput, { target: { value: 'AdMiN' } });
+      expect(screen.getByText('Admin User')).toBeInTheDocument();
+    });
+
+    it('should show no results for non-matching search', () => {
+      renderWithRouter(<UsersPage />);
+      
+      const searchInput = screen.getByPlaceholderText('Search users...');
+      fireEvent.change(searchInput, { target: { value: 'nonexistent' } });
+      
+      expect(screen.queryByText('John Doe')).not.toBeInTheDocument();
+      expect(screen.queryByText('Admin User')).not.toBeInTheDocument();
+    });
   });
 
   it('should display correct user roles and status', () => {
-    const { getAllByText } = render(<UsersPage />);
+    renderWithRouter(<UsersPage />);
     
-    expect(getAllByText('admin')[0]).toBeInTheDocument();
-    expect(getAllByText('customer')[0]).toBeInTheDocument();
-    expect(getAllByText('active')[0]).toBeInTheDocument();
+    const adminBadge = screen.getByText('admin');
+    const customerBadge = screen.getByText('customer');
+    const activeBadges = screen.getAllByText('active');
+
+    expect(adminBadge).toBeInTheDocument();
+    expect(adminBadge).toHaveClass('role-badge', 'admin');
+    expect(customerBadge).toBeInTheDocument();
+    expect(customerBadge).toHaveClass('role-badge', 'customer');
+    expect(activeBadges[0]).toBeInTheDocument();
+    expect(activeBadges[0]).toHaveClass('status-badge', 'active');
+  });
+
+  it('should render action buttons for each user', () => {
+    renderWithRouter(<UsersPage />);
+    
+    // Get all action buttons
+    const viewButton = screen.getAllByLabelText('View user');
+    const editButton = screen.getAllByLabelText('Edit user');
+    const deleteButton = screen.getAllByLabelText('Delete user');
+
+    // Verify we have the right number of buttons (one set per user)
+    expect(viewButton).toHaveLength(2);
+    expect(editButton).toHaveLength(2);
+    expect(deleteButton).toHaveLength(2);
+
+    // Check the first user's action buttons
+    expect(viewButton[0]).toHaveClass('action-button', 'view');
+    expect(editButton[0]).toHaveClass('action-button', 'edit');
+    expect(deleteButton[0]).toHaveClass('action-button', 'delete');
+  });
+
+  describe('Add New User button', () => {
+    it('should render Add New User button with proper styling and accessibility', () => {
+      renderWithRouter(<UsersPage />);
+      
+      const addButton = screen.getByRole('button', { name: /add new user/i });
+      expect(addButton).toBeInTheDocument();
+      expect(addButton).toHaveClass('primary-button');
+      expect(addButton).toBeVisible();
+      
+      // Verify icon is present
+      const icon = addButton.querySelector('.fas.fa-user-plus');
+      expect(icon).toBeInTheDocument();
+    });
   });
 });

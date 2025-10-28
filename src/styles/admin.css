@@ -11,6 +11,20 @@
   margin-left: 200px; /* Match sidebar width */
 }
 
+/* Unified card styles (basadas en .dashboard-card de dashboard.css) */
+.admin-card {
+  border: 2px solid rgba(0, 0, 0, 0.158);
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.admin-card h2 {
+  margin-bottom: 1rem;
+  color: #333;
+  font-size: 1.25rem;
+}
+
 .admin-header {
   display: flex;
   justify-content: space-between;
@@ -61,8 +75,6 @@
 /* Tables */
 .table-container {
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: auto;
 }
 
@@ -188,9 +200,7 @@
 
 .category-card {
   background: white;
-  border-radius: 8px;
   padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .category-header {
@@ -241,9 +251,7 @@
 
 .report-card {
   background: white;
-  border-radius: 8px;
   padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .metrics-grid {
@@ -285,9 +293,7 @@
 /* Profile */
 .profile-container {
   background: white;
-  border-radius: 8px;
   padding: 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .profile-header {

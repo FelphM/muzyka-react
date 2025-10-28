@@ -15,7 +15,7 @@ export function CartPage() {
       artist: "Rock Legends",
       name: "Greatest Hits Collection",
       image: {
-        src: "/images/greatest-hits.jpg",
+        src: "https://tocadiscos.cl/wp-content/uploads/2024/02/queenecdgh.webp",
         alt: "Greatest Hits Collection",
       },
       price: 24.99,

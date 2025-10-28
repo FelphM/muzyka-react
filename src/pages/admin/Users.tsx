@@ -52,7 +52,7 @@ export function UsersPage() {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            <button className="primary-button">
+            <button className="primary-button" aria-label="Add new user">
               <i className="fas fa-user-plus"></i> Add New User
             </button>
           </div>
@@ -95,13 +95,13 @@ export function UsersPage() {
                     <td>{user.lastLogin}</td>
                     <td>
                       <div className="table-actions">
-                        <button className="action-button view">
+                        <button className="action-button view" aria-label="View user">
                           <i className="fas fa-eye"></i>
                         </button>
-                        <button className="action-button edit">
+                        <button className="action-button edit" aria-label="Edit user">
                           <i className="fas fa-edit"></i>
                         </button>
-                        <button className="action-button delete">
+                        <button className="action-button delete" aria-label="Delete user">
                           <i className="fas fa-trash"></i>
                         </button>
                       </div>

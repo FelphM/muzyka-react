@@ -1,8 +1,11 @@
-import { render, fireEvent } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
 import { ProductCard } from '../src/components/ProductCard';
+import { renderWithRouter } from './test-utils';
+import type { Product } from '../src/types/Product';
 
 describe('ProductCard Component', () => {
-  const mockProduct = {
+  const mockProduct: Product = {
     id: "1",
     name: "Test Album",
     artist: "Test Artist",
@@ -18,24 +21,24 @@ describe('ProductCard Component', () => {
   };
 
   it('should render product information correctly', () => {
-    const { getByText, getByAltText } = render(<ProductCard product={mockProduct} />);
+    const { getByText, getByAltText } = renderWithRouter(<ProductCard product={mockProduct} />);
     
-    expect(getByText('Test Artist - Test Album')).toBeInTheDocument();
-    expect(getByText('$29.99 | Compact Disc')).toBeInTheDocument();
-    expect(getByAltText('Test Image')).toBeInTheDocument();
-    expect(getByText('Test description')).toBeInTheDocument();
+    expect(getByText(`${mockProduct.artist} - ${mockProduct.name}`)).toBeDefined();
+    expect(getByText(`$${mockProduct.price} | ${mockProduct.format}`)).toBeDefined();
+    expect(getByAltText(mockProduct.image.alt)).toBeDefined();
+    expect(getByText(mockProduct.description)).toBeDefined();
   });
 
   it('should handle button clicks correctly', () => {
-    const { getByText } = render(<ProductCard product={mockProduct} />);
+    const { getByText } = renderWithRouter(<ProductCard product={mockProduct} />);
     
     const detailsButton = getByText('Details');
     const addToCartButton = getByText('Add To Cart');
     
-    fireEvent.click(detailsButton);
-    // Add navigation test expectations
+    expect(detailsButton).toBeDefined();
+    expect(addToCartButton).toBeDefined();
     
+    fireEvent.click(detailsButton);
     fireEvent.click(addToCartButton);
-    // Add cart functionality test expectations
   });
 });

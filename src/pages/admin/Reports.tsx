@@ -73,7 +73,7 @@ export function ReportsPage() {
 
         <div className="reports-grid">
           {/* Sales Overview Cards */}
-          <div className="report-card sales-overview">
+          <div className="report-card sales-overview admin-card">
             <h2>Sales Overview</h2>
             <div className="metrics-grid">
               {salesData.map((data, index) => (
@@ -99,7 +99,7 @@ export function ReportsPage() {
           </div>
 
           {/* Top Products */}
-          <div className="report-card top-products">
+          <div className="report-card top-products admin-card">
             <h2>Top Selling Products</h2>
             <div className="table-container">
               <table className="admin-table">

@@ -40,7 +40,7 @@ export function AdminProfilePage() {
           </div>
         </div>
 
-        <div className="profile-container">
+        <div className="profile-container admin-card">
           <div className="profile-header">
             <div className="profile-avatar">
               <img src={profile.avatar} alt="Admin Avatar" />
@@ -58,18 +58,28 @@ export function AdminProfilePage() {
 
           <div className="profile-details">
             <div className="detail-group">
-              <label>Full Name</label>
+              <label htmlFor="fullName">Full Name</label>
               {isEditing ? (
-                <input type="text" defaultValue={profile.name} />
+                <input 
+                  id="fullName"
+                  type="text" 
+                  defaultValue={profile.name}
+                  aria-label="Full Name" 
+                />
               ) : (
                 <p>{profile.name}</p>
               )}
             </div>
 
             <div className="detail-group">
-              <label>Email</label>
+              <label htmlFor="email">Email</label>
               {isEditing ? (
-                <input type="email" defaultValue={profile.email} />
+                <input 
+                  id="email"
+                  type="email" 
+                  defaultValue={profile.email}
+                  aria-label="Email"
+                />
               ) : (
                 <p>{profile.email}</p>
               )}

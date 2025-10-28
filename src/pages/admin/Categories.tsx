@@ -43,7 +43,7 @@ export function CategoriesPage() {
 
         <div className="categories-grid">
           {categories.map(category => (
-            <div key={category.id} className="category-card">
+            <div key={category.id} className="category-card admin-card">
               <div className="category-header">
                 <h2>{category.name}</h2>
                 <div className="category-actions">

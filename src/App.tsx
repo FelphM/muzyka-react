@@ -17,9 +17,9 @@ import { ProductsPage } from "./pages/admin/Products";
 import { CategoriesPage } from "./pages/admin/Categories";
 import { UsersPage } from "./pages/admin/Users";
 import { ReportsPage } from "./pages/admin/Reports";
-import { ProfilePage } from "./pages/admin/Profile";
 import { Profile } from "./pages/Profile";
 import { PurchasesPage } from "./components/Purchases";
+import { AdminProfilePage } from "./pages/admin/Profile";
 
 const App: React.FC = () => {
   return (
@@ -62,7 +62,7 @@ const App: React.FC = () => {
 
         <Route path="/admin/reports" element={<ReportsPage />}></Route>
 
-        <Route path="/admin/profile" element={<ProfilePage />}></Route>
+        <Route path="/admin/profile" element={<AdminProfilePage />}></Route>
       </Routes>
     </BrowserRouter>
   );
