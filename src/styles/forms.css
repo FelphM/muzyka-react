@@ -1,0 +1,19 @@
+form { 
+    display: grid;
+    border: 2px solid black;
+    padding: 20px;
+    row-gap: 10px;
+    background-color: white;
+}
+
+form textarea { 
+    resize: vertical;
+    min-height: 200px;
+}
+
+form input, form button, form a, form textarea { 
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+}
+

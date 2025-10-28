@@ -1,0 +1,39 @@
+.purchases-list {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.purchase-item {
+  background: white;
+  margin-bottom: 1rem;
+  border: 2px solid black;
+  overflow: hidden;
+}
+
+.purchase-details {
+  display: flex;
+  gap: 2rem;
+  padding: 1.5rem;
+}
+
+.purchase-image {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.purchase-info {
+  flex: 1;
+}
+
+.purchase-info h3 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+}
+
+.purchase-info p {
+  margin: 0.25rem 0;
+  color: #666;
+}

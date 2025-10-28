@@ -1,18 +1,14 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import "./App.css"
-import "./Cart.css"
-import { Footer } from './Footer.tsx'
-import { Header } from './Header.tsx'
-import { BubbleText } from './BubbleText.tsx'
-import { ProductGrid } from './ProductsGrid.tsx'
-import { TableProducts } from './_db.ts'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import "./styles/global.css"
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <Header></Header>
-    <ProductGrid products={TableProducts}></ProductGrid>
-    <BubbleText text='¿Tienes dudas? ¡Contactanos! ☆ Estamos para ayudarte ☆'></BubbleText>
-    <Footer></Footer>
-  </StrictMode>,
-)
+const rootElement = document.getElementById("root");
+
+if (rootElement) {
+  ReactDOM.createRoot(rootElement).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+}
