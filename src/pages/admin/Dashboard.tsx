@@ -1,12 +1,9 @@
-import { SideBar } from "../../components/SideBar";
 import { Link } from "react-router-dom";
 import "../../styles/dashboard.css";
 
 export function DashboardPage() {
   return (
-    <div className="dashboard-container">
-      <SideBar />
-      <main className="dashboard-content">
+    <>
         <h1>Admin Dashboard</h1>
         
         <div className="dashboard-grid">
@@ -43,7 +40,7 @@ export function DashboardPage() {
                 <span className="order-id">#12344</span>
                 <span className="order-date">28 Oct 2025</span>
                 <span className="order-status completed">Completed</span>
-              </div>
+                </div>
             </div>
             <Link to="/admin/orders" className="view-more">Manage Orders →</Link>
           </section>
@@ -103,7 +100,6 @@ export function DashboardPage() {
             </div>
           </section>
         </div>
-      </main>
-    </div>
+    </>
   );
 }

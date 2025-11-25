@@ -1,8 +1,13 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
-import { Header } from './components/Header';
-import { Footer } from './components/Footer';
+// Header and Footer will be managed by layouts
+// import { Header } from './components/Header';
+// import { Footer } from './components/Footer';
+
+import { MainLayout } from './layouts/MainLayout';
+import { AdminLayout } from './layouts/AdminLayout';
+
 import { LandingPage as Landing } from './pages/Landing';
 import About from './pages/About';
 import { ContactPage as Contact } from './pages/Contact';
@@ -33,35 +38,35 @@ function App() {
     <AuthProvider>
       <CartProvider>
         <Router>
-          <Header />
-          <main>
-            <Routes>
-              <Route path="/" element={<Landing />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:postId" element={<BlogPostDetails />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/product/:slug" element={<ProductDetails />} />
+          {/* Header and Footer are now managed by MainLayout and AdminLayout */}
+          <Routes>
+            <Route path="/" element={<MainLayout />}>
+              <Route index element={<Landing />} /> {/* Render Landing on / */}
+              <Route path="about" element={<About />} />
+              <Route path="contact" element={<Contact />} />
+              <Route path="blog" element={<Blog />} />
+              <Route path="blog/:postId" element={<BlogPostDetails />} />
+              <Route path="cart" element={<Cart />} />
+              <Route path="login" element={<Login />} />
+              <Route path="signup" element={<SignUp />} />
+              <Route path="reset-password" element={<ResetPassword />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="product/:slug" element={<ProductDetails />} />
+            </Route>
 
-              {/* Admin Routes */}
-              <Route path="/admin/dashboard" element={<AdminDashboard />} />
-              <Route path="/admin/orders" element={<AdminOrders />} />
-              <Route path="/admin/products" element={<AdminProducts />} />
-              <Route path="/admin/users" element={<AdminUsers />} />
-              <Route path="/admin/categories" element={<AdminCategories />} />
-              <Route path="/admin/reports" element={<AdminReports />} />
-              <Route path="/admin/profile" element={<AdminProfile />} />
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route path="dashboard" element={<AdminDashboard />} />
+              <Route path="orders" element={<AdminOrders />} />
+              <Route path="products" element={<AdminProducts />} />
+              <Route path="users" element={<AdminUsers />} />
+              <Route path="categories" element={<AdminCategories />} />
+              <Route path="reports" element={<AdminReports />} />
+              <Route path="profile" element={<AdminProfile />} />
+            </Route>
 
-
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </main>
-          <Footer />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </Router>
       </CartProvider>
     </AuthProvider>

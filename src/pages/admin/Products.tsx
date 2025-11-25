@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
-import { SideBar } from "../../components/SideBar";
-import { ProductForm } from "../../components/admin/AddProductForm"; // Renamed from AddProductForm
+import { ProductForm } from "../../components/admin/AddProductForm";
 import type { Product } from "../../types/Product";
 import { getProducts, addProduct, updateProduct, deleteProduct } from '../../services/db';
 import "../../styles/admin.css";
 
 export function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [showProductForm, setShowProductForm] = useState(false); // Changed from showAddProductForm
+  const [showProductForm, setShowProductForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
   useEffect(() => {
@@ -17,7 +16,7 @@ export function ProductsPage() {
   const handleSubmitProduct = (productData: Omit<Product, 'slug'>) => {
     if (editingProduct) {
       // Update existing product
-      const updated = updateProduct(productData as Product); // Cast to Product as it now has an ID
+      const updated = updateProduct(productData as Product);
       if (updated) {
         setProducts((prevProducts) =>
           prevProducts.map((p) => (p.id === updated.id ? updated : p))
@@ -50,78 +49,75 @@ export function ProductsPage() {
   };
 
   return (
-    <div className="admin-container">
-      <SideBar />
-      <main className="admin-content">
-        <div className="admin-header">
-          <h1>Products Management</h1>
-          <div className="admin-actions">
-            <button
-              className="primary-button"
-              onClick={() => {
-                setShowProductForm(true);
-                setEditingProduct(null); // Ensure no product is being edited when adding new
-              }}
-            >
-              <i className="fas fa-plus"></i> Add New Product
-            </button>
+    <>
+          <div className="admin-header">
+            <h1>Products Management</h1>
+            <div className="admin-actions">
+              <button
+                className="primary-button"
+                onClick={() => {
+                  setShowProductForm(true);
+                  setEditingProduct(null);
+                }}
+              >
+                <i className="fas fa-plus"></i> Add New Product
+              </button>
+            </div>
           </div>
-        </div>
 
-        {showProductForm && (
-          <ProductForm
-            initialData={editingProduct || undefined}
-            onSubmit={handleSubmitProduct}
-            onCancel={handleCancelForm}
-            isEditing={!!editingProduct}
-          />
-        )}
+          {showProductForm && (
+            <ProductForm
+              initialData={editingProduct || undefined}
+              onSubmit={handleSubmitProduct}
+              onCancel={handleCancelForm}
+              isEditing={!!editingProduct}
+            />
+          )}
 
-        <div className="table-container">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>Image</th>
-                <th>Name</th>
-                <th>Artist</th>
-                <th>Format</th>
-                <th>Price</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((product) => (
-                <tr key={product.id}>
-                  <td>
-                    <img
-                      src={product.image.src}
-                      alt={product.image.alt}
-                      className="product-thumbnail"
-                    />
-                  </td>
-                  <td>{product.name}</td>
-                  <td>{product.artist}</td>
-                  <td>{product.format}</td>
-                  <td>${product.price.toFixed(2)}</td>
-                  <td>
-                    <div className="table-actions">
-                      <button className="action-button edit" onClick={() => handleEditClick(product)}>
-                        <i className="fas fa-edit"></i>
-                      </button>
-                      <button
-                        className="action-button delete"
-                        onClick={() => handleDeleteProduct(product.id)}
-                      >
-                        <i className="fas fa-trash"></i>
-                      </button>
-                    </div>
-                  </td>
+          <div className="table-container">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Artist</th>
+                  <th>Format</th>
+                  <th>Price</th>
+                  <th>Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </main>
-    </div>
+              </thead>
+              <tbody>
+                {products.map((product) => (
+                  <tr key={product.id}>
+                    <td>
+                      <img
+                        src={product.image.src}
+                        alt={product.image.alt}
+                        className="product-thumbnail"
+                      />
+                    </td>
+                    <td>{product.name}</td>
+                    <td>{product.artist}</td>
+                    <td>{product.format}</td>
+                    <td>${product.price.toFixed(2)}</td>
+                    <td>
+                      <div className="table-actions">
+                        <button className="action-button edit" onClick={() => handleEditClick(product)}>
+                          <i className="fas fa-edit"></i>
+                        </button>
+                        <button
+                          className="action-button delete"
+                          onClick={() => handleDeleteProduct(product.id)}
+                        >
+                          <i className="fas fa-trash"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
   );
 }
