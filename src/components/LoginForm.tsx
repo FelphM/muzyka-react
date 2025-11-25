@@ -1,20 +1,34 @@
 import { useState, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/forms.css";
+import { useAuth } from "../context/AuthContext";
 
 export function LoginForm() {
   const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    // TODO: Replace with actual authentication logic (e.g., API call)
-    console.log("Logging in with:", { usernameOrEmail, password });
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    
+    const foundUser = users.find(
+      (u: any) => (u.username === usernameOrEmail || u.email === usernameOrEmail) && u.password === password
+    );
 
-    // Simulate a successful login and redirect
-    alert("Login successful! Redirecting to your profile.");
-    navigate("/profile");
+    if (foundUser) {
+      alert("Login successful!");
+      if (foundUser.username === 'admin') {
+        login({ username: foundUser.username, email: foundUser.email, role: 'admin' });
+        navigate("/admin/dashboard");
+      } else {
+        login({ username: foundUser.username, email: foundUser.email });
+        navigate("/profile");
+      }
+    } else {
+      alert("Invalid username/email or password.");
+    }
   };
 
   return (

@@ -1,40 +1,54 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SideBar } from "../../components/SideBar";
+import { UserForm } from '../../components/admin/AddUserForm'; // Renamed from AddUserForm
+import type { User } from '../../types/User.ts';
+import { getUsers, addUser, updateUser, deleteUser } from '../../services/db';
 import "../../styles/admin.css";
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: 'admin' | 'customer';
-  status: 'active' | 'inactive';
-  joinDate: string;
-  lastLogin: string;
-}
-
 export function UsersPage() {
-  const [users] = useState<User[]>([
-    {
-      id: "1",
-      name: "John Doe",
-      email: "john@example.com",
-      role: "customer",
-      status: "active",
-      joinDate: "2025-01-15",
-      lastLogin: "2025-10-28"
-    },
-    {
-      id: "2",
-      name: "Admin User",
-      email: "admin@muzyka.com",
-      role: "admin",
-      status: "active",
-      joinDate: "2024-12-01",
-      lastLogin: "2025-10-28"
-    }
-  ]);
-
+  const [users, setUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [showUserForm, setShowUserForm] = useState(false); // Changed from showAddUserForm
+  const [editingUser, setEditingUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    setUsers(getUsers());
+  }, []);
+
+  const handleSubmitUser = (userData: Omit<User, 'joinDate' | 'lastLogin'>) => {
+    if (editingUser) {
+      // Update existing user
+      const updated = updateUser(userData as User); // Cast to User as it now has an ID
+      if (updated) {
+        setUsers((prevUsers) =>
+          prevUsers.map((u) => (u.id === updated.id ? updated : u))
+        );
+      }
+    } else {
+      // Add new user
+      const newlyAddedUser = addUser(userData);
+      setUsers((prevUsers) => [...prevUsers, newlyAddedUser]);
+    }
+    setShowUserForm(false);
+    setEditingUser(null);
+  };
+
+  const handleCancelForm = () => {
+    setShowUserForm(false);
+    setEditingUser(null);
+  };
+
+  const handleEditClick = (user: User) => {
+    setEditingUser(user);
+    setShowUserForm(true);
+  };
+
+  const handleDeleteUser = (userId: string) => {
+    if (window.confirm('Are you sure you want to delete this user?')) {
+      deleteUser(userId);
+      setUsers((prevUsers) => prevUsers.filter((u) => u.id !== userId));
+    }
+  };
 
   return (
     <div className="admin-container">
@@ -52,11 +66,27 @@ export function UsersPage() {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            <button className="primary-button" aria-label="Add new user">
+            <button
+              className="primary-button"
+              aria-label="Add new user"
+              onClick={() => {
+                setShowUserForm(true);
+                setEditingUser(null); // Ensure no user is being edited when adding new
+              }}
+            >
               <i className="fas fa-user-plus"></i> Add New User
             </button>
           </div>
         </div>
+
+        {showUserForm && (
+          <UserForm
+            initialData={editingUser || undefined}
+            onSubmit={handleSubmitUser}
+            onCancel={handleCancelForm}
+            isEditing={!!editingUser}
+          />
+        )}
 
         <div className="table-container">
           <table className="admin-table">
@@ -73,11 +103,11 @@ export function UsersPage() {
             </thead>
             <tbody>
               {users
-                .filter(user => 
+                .filter(user =>
                   user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                   user.email.toLowerCase().includes(searchTerm.toLowerCase())
                 )
-                .map(user => (
+                .map((user) => (
                   <tr key={user.id}>
                     <td>{user.name}</td>
                     <td>{user.email}</td>
@@ -91,17 +121,15 @@ export function UsersPage() {
                         {user.status}
                       </span>
                     </td>
-                    <td>{user.joinDate}</td>
-                    <td>{user.lastLogin}</td>
                     <td>
                       <div className="table-actions">
-                        <button className="action-button view" aria-label="View user">
-                          <i className="fas fa-eye"></i>
-                        </button>
-                        <button className="action-button edit" aria-label="Edit user">
+                        <button className="action-button edit" onClick={() => handleEditClick(user)}>
                           <i className="fas fa-edit"></i>
                         </button>
-                        <button className="action-button delete" aria-label="Delete user">
+                        <button
+                          className="action-button delete"
+                          onClick={() => handleDeleteUser(user.id)}
+                        >
                           <i className="fas fa-trash"></i>
                         </button>
                       </div>

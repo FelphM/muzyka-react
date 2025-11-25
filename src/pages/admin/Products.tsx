@@ -1,25 +1,53 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SideBar } from "../../components/SideBar";
+import { ProductForm } from "../../components/admin/AddProductForm"; // Renamed from AddProductForm
 import type { Product } from "../../types/Product";
+import { getProducts, addProduct, updateProduct, deleteProduct } from '../../services/db';
 import "../../styles/admin.css";
 
 export function ProductsPage() {
-  const [products] = useState<Product[]>([
-    {
-      id: "1",
-      name: "Jazz Collection Vol. 1",
-      artist: "Various Artists",
-      image: {
-        src: "/images/jazz-collection.jpg",
-        alt: "Jazz Collection Volume 1"
-      },
-      price: 29.99,
-      format: "Compact Disc",
-      description: "A compilation of the best jazz tracks",
-      link: "/products/jazz-collection",
-      slug: "jazz-collection"
+  const [products, setProducts] = useState<Product[]>([]);
+  const [showProductForm, setShowProductForm] = useState(false); // Changed from showAddProductForm
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+
+  useEffect(() => {
+    setProducts(getProducts());
+  }, []);
+
+  const handleSubmitProduct = (productData: Omit<Product, 'slug'>) => {
+    if (editingProduct) {
+      // Update existing product
+      const updated = updateProduct(productData as Product); // Cast to Product as it now has an ID
+      if (updated) {
+        setProducts((prevProducts) =>
+          prevProducts.map((p) => (p.id === updated.id ? updated : p))
+        );
+      }
+    } else {
+      // Add new product
+      const newlyAddedProduct = addProduct(productData);
+      setProducts((prevProducts) => [...prevProducts, newlyAddedProduct]);
     }
-  ]);
+    setShowProductForm(false);
+    setEditingProduct(null);
+  };
+
+  const handleCancelForm = () => {
+    setShowProductForm(false);
+    setEditingProduct(null);
+  };
+
+  const handleEditClick = (product: Product) => {
+    setEditingProduct(product);
+    setShowProductForm(true);
+  };
+
+  const handleDeleteProduct = (productId: string) => {
+    if (window.confirm('Are you sure you want to delete this product?')) {
+      deleteProduct(productId);
+      setProducts((prevProducts) => prevProducts.filter((p) => p.id !== productId));
+    }
+  };
 
   return (
     <div className="admin-container">
@@ -28,11 +56,26 @@ export function ProductsPage() {
         <div className="admin-header">
           <h1>Products Management</h1>
           <div className="admin-actions">
-            <button className="primary-button">
+            <button
+              className="primary-button"
+              onClick={() => {
+                setShowProductForm(true);
+                setEditingProduct(null); // Ensure no product is being edited when adding new
+              }}
+            >
               <i className="fas fa-plus"></i> Add New Product
             </button>
           </div>
         </div>
+
+        {showProductForm && (
+          <ProductForm
+            initialData={editingProduct || undefined}
+            onSubmit={handleSubmitProduct}
+            onCancel={handleCancelForm}
+            isEditing={!!editingProduct}
+          />
+        )}
 
         <div className="table-container">
           <table className="admin-table">
@@ -47,12 +90,12 @@ export function ProductsPage() {
               </tr>
             </thead>
             <tbody>
-              {products.map(product => (
+              {products.map((product) => (
                 <tr key={product.id}>
                   <td>
-                    <img 
-                      src={product.image.src} 
-                      alt={product.image.alt} 
+                    <img
+                      src={product.image.src}
+                      alt={product.image.alt}
                       className="product-thumbnail"
                     />
                   </td>
@@ -62,13 +105,13 @@ export function ProductsPage() {
                   <td>${product.price.toFixed(2)}</td>
                   <td>
                     <div className="table-actions">
-                      <button className="action-button view">
-                        <i className="fas fa-eye"></i>
-                      </button>
-                      <button className="action-button edit">
+                      <button className="action-button edit" onClick={() => handleEditClick(product)}>
                         <i className="fas fa-edit"></i>
                       </button>
-                      <button className="action-button delete">
+                      <button
+                        className="action-button delete"
+                        onClick={() => handleDeleteProduct(product.id)}
+                      >
                         <i className="fas fa-trash"></i>
                       </button>
                     </div>

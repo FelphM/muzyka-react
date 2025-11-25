@@ -1,19 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../styles/forms.css";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-const initialUserData = {
-  username: "Alice",
-  email: "alice@gmail.com",
-  phone: "+56 9 1234 5678",
-  address: "123 Kennedy Avenue",
-  city: "Santiago",
-  stateProvince: "Metropolitan Region",
-  postalCode: "7500000",
-};
 
 export function Profile() {
-  const [userData, setUserData] = useState(initialUserData);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState({
+    username: "",
+    email: "",
+    phone: "+56 9 1234 5678",
+    address: "123 Kennedy Avenue",
+    city: "Santiago",
+    stateProvince: "Metropolitan Region",
+    postalCode: "7500000",
+  });
   const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      setUserData(prev => ({ ...prev, username: user.username, email: user.email }));
+    }
+  }, [user]);
 
   const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
@@ -33,13 +42,15 @@ export function Profile() {
 
   const handleCancel = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    setUserData(initialUserData);
+    // Reset to the user data from context
+    if (user) setUserData(prev => ({ ...prev, username: user.username, email: user.email }));
     setIsEditing(false);
   };
 
   const handleLogout = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    console.log("Logging Out...");
+    logout();
+    navigate("/");
   };
 
   const handleChangePassword = (e: { preventDefault: () => void }) => {

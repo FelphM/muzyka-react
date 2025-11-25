@@ -1,14 +1,11 @@
 import { Link } from "react-router-dom";
 import "../styles/header.css";
 import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 
-interface HeaderOptions {
-  Logged?: boolean;
-  Admin?: boolean;
-}
-
-export function Header({ Logged = false, Admin = false }: HeaderOptions) {
+export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -52,19 +49,21 @@ export function Header({ Logged = false, Admin = false }: HeaderOptions) {
           <Link to="/blog">Blog</Link>
         </li>
 
-        {Admin && (
-          <li>
-            <Link to="/admin">Admin</Link>
-          </li>
-        )}
-
-        {Logged ? (
+        {user ? (
           <>
             <li>
               <Link to="/purchases">Purchases</Link>
             </li>
             <li>
               <Link to="/profile">My Profile</Link>
+            </li>
+            {user.role === 'admin' && (
+              <li>
+                <Link to="/admin/dashboard">Admin</Link>
+              </li>
+            )}
+            <li>
+              <a href="#" onClick={() => { logout(); setIsMenuOpen(false); }}>Logout</a>
             </li>
           </>
         ) : (

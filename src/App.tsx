@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
+import { AuthProvider } from './context/AuthContext';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { LandingPage as Landing } from './pages/Landing';
@@ -29,39 +30,41 @@ import './styles/global.css';
 
 function App() {
   return (
-    <CartProvider>
-      <Router>
-        <Header />
-        <main>
-          <Routes>
-            <Route path="/" element={<Landing />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:postId" element={<BlogPostDetails />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/product/:slug" element={<ProductDetails />} />
+    <AuthProvider>
+      <CartProvider>
+        <Router>
+          <Header />
+          <main>
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:postId" element={<BlogPostDetails />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/product/:slug" element={<ProductDetails />} />
 
-            {/* Admin Routes */}
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/admin/orders" element={<AdminOrders />} />
-            <Route path="/admin/products" element={<AdminProducts />} />
-            <Route path="/admin/users" element={<AdminUsers />} />
-            <Route path="/admin/categories" element={<AdminCategories />} />
-            <Route path="/admin/reports" element={<AdminReports />} />
-            <Route path="/admin/profile" element={<AdminProfile />} />
+              {/* Admin Routes */}
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/orders" element={<AdminOrders />} />
+              <Route path="/admin/products" element={<AdminProducts />} />
+              <Route path="/admin/users" element={<AdminUsers />} />
+              <Route path="/admin/categories" element={<AdminCategories />} />
+              <Route path="/admin/reports" element={<AdminReports />} />
+              <Route path="/admin/profile" element={<AdminProfile />} />
 
 
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-        <Footer />
-      </Router>
-    </CartProvider>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </main>
+          <Footer />
+        </Router>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 

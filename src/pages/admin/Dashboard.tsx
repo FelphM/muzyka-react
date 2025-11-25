@@ -84,19 +84,19 @@ export function DashboardPage() {
           <section className="dashboard-card quick-actions">
             <h2>Quick Actions</h2>
             <div className="actions-grid">
-              <Link to="/admin/products/new" className="action-button">
+              <Link to="/admin/products" className="action-button">
                 <i className="fas fa-plus"></i>
                 Add New Product
               </Link>
-              <Link to="/admin/categories/new" className="action-button">
+              <Link to="/admin/categories" className="action-button">
                 <i className="fas fa-folder-plus"></i>
                 Add Category
               </Link>
-              <Link to="/admin/orders/pending" className="action-button">
+              <Link to="/admin/orders" className="action-button">
                 <i className="fas fa-clock"></i>
                 View Pending Orders
               </Link>
-              <Link to="/admin/reports/generate" className="action-button">
+              <Link to="/admin/reports" className="action-button">
                 <i className="fas fa-file-export"></i>
                 Generate Report
               </Link>

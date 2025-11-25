@@ -1,5 +1,14 @@
 import type { Post } from "../types/BlogPost";
 import type { Product } from "../types/Product";
+import type { Category } from "../types/Category";
+import type { User } from "../types/User";
+
+function generateSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/ /g, "-")
+    .replace(/[^\w-]+/g, "");
+}
 
 export function getProducts(): Product[] {
   return ProductTable;
@@ -7,6 +16,92 @@ export function getProducts(): Product[] {
 
 export function getPosts(): Post[] {
   return PostTable;
+}
+
+export function getCategories(): Category[] {
+  return CategoryTable;
+}
+
+export function getUsers(): User[] {
+  return UserTable;
+}
+
+export function addProduct(newProduct: Omit<Product, "id" | "slug">): Product {
+  const id = Date.now().toString();
+  const slug = generateSlug(newProduct.name);
+  const product: Product = { ...newProduct, id, slug };
+  ProductTable.push(product);
+  return product;
+}
+
+export function addCategory(newCategory: Omit<Category, "id" | "productsCount" | "slug">): Category {
+  const id = Date.now().toString();
+  const slug = generateSlug(newCategory.name);
+  const category: Category = { ...newCategory, id, productsCount: 0, slug };
+  CategoryTable.push(category);
+  return category;
+}
+
+export function addUser(newUser: Omit<User, "id" | "joinDate" | "lastLogin">): User {
+  const id = Date.now().toString();
+  const date = new Date().toISOString();
+  const user: User = { ...newUser, id, joinDate: date, lastLogin: date };
+  UserTable.push(user);
+  return user;
+}
+
+export function updateProduct(updatedProduct: Product): Product | undefined {
+  const index = ProductTable.findIndex((p) => p.id === updatedProduct.id);
+  if (index !== -1) {
+    ProductTable[index] = { ...updatedProduct, slug: generateSlug(updatedProduct.name) };
+    return ProductTable[index];
+  }
+  return undefined;
+}
+
+export function deleteProduct(productId: string): boolean {
+  const initialLength = ProductTable.length;
+  ProductTable.splice(
+    ProductTable.findIndex((p) => p.id === productId),
+    1
+  );
+  return ProductTable.length < initialLength;
+}
+
+export function updateCategory(updatedCategory: Category): Category | undefined {
+  const index = CategoryTable.findIndex((c) => c.id === updatedCategory.id);
+  if (index !== -1) {
+    CategoryTable[index] = { ...updatedCategory, slug: generateSlug(updatedCategory.name) };
+    return CategoryTable[index];
+  }
+  return undefined;
+}
+
+export function deleteCategory(categoryId: string): boolean {
+  const initialLength = CategoryTable.length;
+  CategoryTable.splice(
+    CategoryTable.findIndex((c) => c.id === categoryId),
+    1
+  );
+  return CategoryTable.length < initialLength;
+}
+
+export function updateUser(updatedUser: User): User | undefined {
+  const index = UserTable.findIndex((u) => u.id === updatedUser.id);
+  if (index !== -1) {
+    UserTable[index] = updatedUser;
+    return UserTable[index];
+  }
+  return undefined;
+}
+
+export function deleteUser(userId: string): boolean {
+  const initialLength = UserTable.length;
+  UserTable.splice(
+    UserTable.findIndex((u) => u.id === userId),
+    1
+  );
+  return UserTable.length < initialLength;
 }
 
 export const ProductTable: Product[] = [
@@ -81,7 +176,7 @@ export const ProductTable: Product[] = [
     format: "Long Play",
     slug: "velvet-underground-nico",
     image: {
-      src: "https://i.discogs.com/Yh1cs99h4P29lRCaXXfbWb7APlDM9ODuwphDfby_2T8/rs:fit/g:sm/q:90/h:587/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTUwMzQw/NDUtMTQ1NDU5Mzc2/OC04ODU2LmpwZWc.jpeg",
+      src: "https://i.discogs.com/Yh1cs99h4P29lRCaXXfbWb7APlDM9ODuwphDfby_2T8/rs:fit/g:sm/q:90/h:587/w:600/czM6Ly9kaXNjb2dz/LWRhdGAbYXNlLWlt/YWdlcy9SLTUwMzQw/NDUtMTQ1NDU5Mzc2/OC04ODU2LmpwZWc.jpeg",
       alt: "The Velvet Underground & Nico Cover",
     },
   },
@@ -214,11 +309,79 @@ export const PostTable: Post[] = [
   },
 ];
 
+export const CategoryTable: Category[] = [
+  {
+    id: "1",
+    name: "Rock",
+    description: "Classic Rock, Alternative Rock, Hard Rock, etc.",
+    productsCount: 3,
+    slug: "rock",
+  },
+  {
+    id: "2",
+    name: "Pop",
+    description: "Pop, Synth-Pop, Dance-Pop, etc.",
+    productsCount: 1,
+    slug: "pop",
+  },
+  {
+    id: "3",
+    name: "Hip Hop",
+    description: "Hip Hop, Rap, Trap, etc.",
+    productsCount: 1,
+    slug: "hip-hop",
+  },
+  {
+    id: "4",
+    name: "Electronic",
+    description: "Electronic, House, Techno, Ambient, etc.",
+    productsCount: 0,
+    slug: "electronic",
+  },
+];
+
+export const UserTable: User[] = [
+  {
+    id: "1",
+    name: "Admin User",
+    email: "admin@example.com",
+    role: "admin",
+    status: "active",
+    joinDate: "2023-01-01T10:00:00Z",
+    lastLogin: "2023-11-20T15:30:00Z",
+  },
+  {
+    id: "2",
+    name: "John Doe",
+    email: "john.doe@example.com",
+    role: "customer",
+    status: "active",
+    joinDate: "2023-02-15T11:00:00Z",
+    lastLogin: "2023-11-19T14:00:00Z",
+  },
+  {
+    id: "3",
+    name: "Jane Smith",
+    email: "jane.smith@example.com",
+    role: "customer",
+    status: "inactive",
+    joinDate: "2023-03-20T09:00:00Z",
+    lastLogin: "2023-10-01T12:00:00Z",
+  },
+];
+
 export const TABLES = {
   PRODUCT: {
     content: ProductTable,
   },
   POST: {
     content: PostTable
-  }
+  },
+  CATEGORY: {
+    content: CategoryTable,
+  },
+  USER: {
+    content: UserTable,
+  },
 };
+
