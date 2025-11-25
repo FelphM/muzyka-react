@@ -1,7 +1,5 @@
 import { useParams } from "react-router-dom";
 import { FloatingUp } from "../components/FloatingUp";
-import { Footer } from "../components/Footer";
-import { Header } from "../components/Header";
 import { Breadcrumb } from "../components/Breadcrumb";
 import "../styles/details.css";
 import type { Post } from "../types/BlogPost";
@@ -19,7 +17,6 @@ export function BlogPostDetails() {
   return (
     <>
       <FloatingUp />
-      <Header />
       <Breadcrumb 
         items={[
           { label: "Blog", path: "/blog" },
@@ -47,7 +44,6 @@ export function BlogPostDetails() {
           ))}
         </div>
       </article>
-      <Footer />
     </>
   );
 }

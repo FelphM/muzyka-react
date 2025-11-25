@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { Footer } from "../components/Footer";
-import { Header } from "../components/Header";
 import "../styles/forms.css";
 
 const initialUserData = {
@@ -51,8 +49,6 @@ export function Profile() {
 
   return (
     <>
-      <Header />
-
       <main className="centerContent">
         <section>
           <h2>👤 Profile Information</h2>
@@ -187,8 +183,6 @@ export function Profile() {
           <button className="deleteAccountButton">Delete Account</button>
         </section>
       </main>
-
-      <Footer />
     </>
   );
 }

@@ -1,8 +1,6 @@
 import { Accordion } from "../components/Accordion";
 import { ContactForm } from "../components/ContactForm";
 import { FloatingUp } from "../components/FloatingUp";
-import { Footer } from "../components/Footer";
-import { Header } from "../components/Header";
 import { Map } from "../components/Map";
 import "../styles/blog.css";
 
@@ -34,10 +32,9 @@ export const faqData = [
   },
 ];
 
-export function AboutPage() {
+export default function About() {
   return (
     <>
-      <Header></Header>
       <FloatingUp></FloatingUp>
       <div className="centerContent">
         <h2>We enjoy the Muzyka</h2>
@@ -63,7 +60,6 @@ export function AboutPage() {
         <h2>Talk with us!</h2>
         <ContactForm></ContactForm>
       </div>
-      <Footer></Footer>
     </>
   );
 }

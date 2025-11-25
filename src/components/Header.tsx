@@ -73,7 +73,7 @@ export function Header({ Logged = false, Admin = false }: HeaderOptions) {
               <Link to="/login">Login</Link>
             </li>
             <li>
-              <Link to="/signup" onClick={() => setIsMenuOpen(false)}>Sign Up</Link>
+              <Link to="/signup">Sign Up</Link>
             </li>
           </>
         )}

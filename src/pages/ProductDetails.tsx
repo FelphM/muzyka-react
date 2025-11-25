@@ -1,7 +1,5 @@
 import { useParams } from "react-router-dom";
 import { FloatingUp } from "../components/FloatingUp";
-import { Footer } from "../components/Footer";
-import { Header } from "../components/Header";
 import { Breadcrumb } from "../components/Breadcrumb";
 import "../styles/details.css";
 import type { Product } from "../types/Product";
@@ -19,7 +17,6 @@ export function ProductDetails() {
   return (
     <>
       <FloatingUp />
-      <Header />
       <Breadcrumb 
         items={[
           { label: "Productos", path: "/" },
@@ -43,7 +40,6 @@ export function ProductDetails() {
           <button className="addToCart">Add To Cart</button>
         </div>
       </article>
-      <Footer />
     </>
   );
 }

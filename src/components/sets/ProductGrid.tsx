@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { MockData } from "../../services/api";
 import type { Product } from "../../types/Product";
-import { ProductCard } from "../ProductCard";
+import ProductCard from "../ProductCard";
 import "../../styles/product.css"
 
 interface ProductGridProps {

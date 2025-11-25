@@ -1,6 +1,6 @@
 import { fireEvent } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import { ProductCard } from '../src/components/ProductCard';
+import ProductCard from '../src/components/ProductCard';
 import { renderWithRouter } from './test-utils';
 import type { Product } from '../src/types/Product';
 
