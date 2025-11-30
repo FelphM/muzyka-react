@@ -1,3 +1,5 @@
+import type { Category } from './Category';
+
 type format = "Compact Disc" 
               | "Long Play" 
               | "Cassette" 
@@ -13,6 +15,6 @@ export type Product = {
     price: number,
     format: format,
     description: string,
-
+    category: Category,
     slug: string,
 };

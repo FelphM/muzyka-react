@@ -1,9 +1,14 @@
 .ProductCard {
-  display: block;
+  display: flex;
+  flex-direction: column;
   border: 2px solid black;
   padding: 20px;
   color: black;
   text-decoration: none;
+}
+
+.ProductCard .product-info {
+  flex-grow: 1;
 }
 
 .ProductCard .ProductCardImageWrapper {
@@ -56,6 +61,6 @@
 .ProductGrid {
   display: grid;
   min-height: 1200px;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 10px;
 }

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import type { Product } from '../../types/Product';
+import type { Category } from '../../types/Category';
+import { getAllCategories } from '../../services/api';
 
 interface ProductFormProps {
   initialData?: Product;
@@ -16,6 +18,20 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit,
   const [price, setPrice] = useState<number>(initialData?.price || 0);
   const [format, setFormat] = useState(initialData?.format || '');
   const [description, setDescription] = useState(initialData?.description || '');
+  const [categoryId, setCategoryId] = useState<number | ''>(initialData?.category.id || '');
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const fetchedCategories = await getAllCategories();
+        setCategories(fetchedCategories);
+      } catch (error) {
+        console.error("Failed to fetch categories:", error);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     if (initialData) {
@@ -26,6 +42,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit,
       setPrice(initialData.price);
       setFormat(initialData.format);
       setDescription(initialData.description);
+      setCategoryId(initialData.category.id);
     } else {
       setName('');
       setArtist('');
@@ -34,11 +51,17 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit,
       setPrice(0);
       setFormat('');
       setDescription('');
+      setCategoryId('');
     }
   }, [initialData]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const selectedCategory = categories.find(c => c.id === categoryId);
+    if (!selectedCategory) {
+      alert("Please select a valid category.");
+      return;
+    }
     const productData: Omit<Product, 'slug' | 'id'> & { id?: number } = {
       name,
       artist,
@@ -47,6 +70,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit,
       price,
       format,
       description,
+      category: selectedCategory,
     };
     if (isEditing) {
       productData.id = initialData!.id;
@@ -62,6 +86,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit,
       setPrice(0);
       setFormat('');
       setDescription('');
+      setCategoryId('');
     }
   };
 
@@ -88,6 +113,22 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit,
             onChange={(e) => setArtist(e.target.value)}
             required
           />
+        </div>
+        <div className="form-group">
+          <label htmlFor="category">Category:</label>
+          <select
+            id="category"
+            value={categoryId}
+            onChange={(e) => setCategoryId(Number(e.target.value))}
+            required
+          >
+            <option value="" disabled>Select a category</option>
+            {categories.map(category => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="form-group">
           <label htmlFor="imageSrc">Image URL:</label>
