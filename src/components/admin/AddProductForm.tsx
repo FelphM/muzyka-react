@@ -3,7 +3,7 @@ import type { Product } from '../../types/Product';
 
 interface ProductFormProps {
   initialData?: Product;
-  onSubmit: (product: Omit<Product, 'slug'>) => void;
+  onSubmit: (product: Omit<Product, 'slug' | 'id'> & { id?: number }) => void;
   onCancel: () => void;
   isEditing?: boolean;
 }
@@ -11,8 +11,8 @@ interface ProductFormProps {
 export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit, onCancel, isEditing = false }) => {
   const [name, setName] = useState(initialData?.name || '');
   const [artist, setArtist] = useState(initialData?.artist || '');
-  const [imageSrc, setImageSrc] = useState(initialData?.image.src || '');
-  const [imageAlt, setImageAlt] = useState(initialData?.image.alt || '');
+  const [imageUrl, setImageUrl] = useState(initialData?.imageUrl || '');
+  const [imageAlt, setImageAlt] = useState(initialData?.imageAlt || '');
   const [price, setPrice] = useState<number>(initialData?.price || 0);
   const [format, setFormat] = useState(initialData?.format || '');
   const [description, setDescription] = useState(initialData?.description || '');
@@ -21,15 +21,15 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit,
     if (initialData) {
       setName(initialData.name);
       setArtist(initialData.artist);
-      setImageSrc(initialData.image.src);
-      setImageAlt(initialData.image.alt);
+      setImageUrl(initialData.imageUrl);
+      setImageAlt(initialData.imageAlt);
       setPrice(initialData.price);
       setFormat(initialData.format);
       setDescription(initialData.description);
     } else {
       setName('');
       setArtist('');
-      setImageSrc('');
+      setImageUrl('');
       setImageAlt('');
       setPrice(0);
       setFormat('');
@@ -39,23 +39,25 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit,
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const productData: Omit<Product, 'slug'> = {
-      id: initialData?.id || '', // id is included if editing
+    const productData: Omit<Product, 'slug' | 'id'> & { id?: number } = {
       name,
       artist,
-      image: { src: imageSrc, alt: imageAlt },
+      imageUrl,
+      imageAlt,
       price,
       format,
       description,
-      link: `/products/${name.toLowerCase().replace(/\s/g, '-')}`, // Link regenerated on update
     };
+    if (isEditing) {
+      productData.id = initialData!.id;
+    }
     onSubmit(productData);
 
     if (!isEditing) {
       // Clear form fields only when adding a new product
       setName('');
       setArtist('');
-      setImageSrc('');
+      setImageUrl('');
       setImageAlt('');
       setPrice(0);
       setFormat('');
@@ -92,8 +94,8 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit,
           <input
             type="text"
             id="imageSrc"
-            value={imageSrc}
-            onChange={(e) => setImageSrc(e.target.value)}
+            value={imageUrl}
+            onChange={(e) => setImageUrl(e.target.value)}
             required
           />
         </div>

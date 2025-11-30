@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { MockData } from "../../services/api";
+import { getAllProducts } from "../../services/api";
 import type { Product } from "../../types/Product";
 import ProductCard from "../ProductCard";
 import "../../styles/product.css"
@@ -13,17 +13,16 @@ export function ProductGrid({ searchTerm }: ProductGridProps) {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    MockData.connect();
     let mounted = true;
 
     (async () => {
       try {
-        const data = await MockData.fetchData("PRODUCT");
+        const data = await getAllProducts();
         if (!mounted) return;
         if (Array.isArray(data)) {
           setProducts(data as Product[]);
         } else {
-          console.warn("MockData.fetchData returned non-array:", data);
+          console.warn("getAllProducts returned non-array:", data);
         }
       } catch (err) {
         console.error("Failed to fetch products", err);
@@ -32,7 +31,6 @@ export function ProductGrid({ searchTerm }: ProductGridProps) {
 
     return () => {
       mounted = false;
-      MockData.disconnect();
     };
   }, []);
 

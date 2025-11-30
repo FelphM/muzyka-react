@@ -4,30 +4,29 @@ import "../styles/forms.css";
 import { useAuth } from "../context/AuthContext";
 
 export function LoginForm() {
-  const [usernameOrEmail, setUsernameOrEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    
-    const foundUser = users.find(
-      (u: any) => (u.username === usernameOrEmail || u.email === usernameOrEmail) && u.password === password
-    );
-
-    if (foundUser) {
-      alert("Login successful!");
-      if (foundUser.username === 'admin') {
-        login({ username: foundUser.username, email: foundUser.email, role: 'admin' });
+    try {
+      await login(email, password); // Use email as email
+      // Check user role and navigate accordingly
+      // Assuming user object is available in useAuth() context after successful login
+      const loggedInUser = JSON.parse(localStorage.getItem('user') || '{}'); 
+      
+      if (loggedInUser.role === 'admin') {
+        alert("Admin Login successful!");
         navigate("/admin/dashboard");
       } else {
-        login({ username: foundUser.username, email: foundUser.email });
+        alert("Login successful!");
         navigate("/profile");
       }
-    } else {
-      alert("Invalid username/email or password.");
+    } catch (error) {
+      alert("Invalid email or password. Please try again.");
+      console.error("Login attempt failed:", error);
     }
   };
 
@@ -35,14 +34,14 @@ export function LoginForm() {
     <>
       <form onSubmit={handleSubmit}>
         <label>
-          Username or Email
+          Email
           <input
-            type="text"
-            name="usernameOrEmail"
-            id="usernameOrEmail"
-            placeholder="Alice"
-            value={usernameOrEmail}
-            onChange={(e) => setUsernameOrEmail(e.target.value)}
+            type="email"
+            name="email"
+            id="email"
+            placeholder="alice@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </label>

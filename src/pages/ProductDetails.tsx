@@ -1,17 +1,29 @@
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { FloatingUp } from "../components/FloatingUp";
 import { Breadcrumb } from "../components/Breadcrumb";
 import "../styles/details.css";
-import type { Product } from "../types/Product";
-import { getProducts } from "../services/db";
+import { getProductBySlug } from "../services/api";
+import { useCart } from "../context/CartContext";
 
 export function ProductDetails() {
-  const { slug } = useParams();
-  const products = getProducts();
-  const product = products.find((p: Product) => p.slug === slug);
+  const { slug } = useParams<{ slug: string }>();
+  const [product, setProduct] = useState<Product | null>(null);
+  const { addToCart } = useCart();
+
+  useEffect(() => {
+    if (slug) {
+      getProductBySlug(slug)
+        .then(setProduct)
+        .catch(error => {
+          console.error("Failed to fetch product", error);
+          setProduct(null);
+        });
+    }
+  }, [slug]);
 
   if (!product) {
-    return <div>Product not found</div>;
+    return <div>Loading...</div>;
   }
 
   return (
@@ -25,7 +37,7 @@ export function ProductDetails() {
       />
       <article className="productDetails">
         <div className="productImageWrapper">
-          <img src={product.image.src} alt={product.image.alt} />
+          <img src={product.imageUrl} alt={product.imageAlt} />
         </div>
         <div className="productInfo">
           <h1>{product.artist} - {product.name}</h1>
@@ -34,10 +46,8 @@ export function ProductDetails() {
             <p className="format">{product.format}</p>
           </div>
           <p className="description">{product.description}</p>
-          <a href={product.link} target="_blank" rel="noopener noreferrer" className="learnMore">
-            Learn more about this release
-          </a>
-          <button className="addToCart">Add To Cart</button>
+
+          <button className="addToCart" onClick={() => addToCart(product)}>Add To Cart</button>
         </div>
       </article>
     </>

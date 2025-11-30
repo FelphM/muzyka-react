@@ -3,7 +3,7 @@ import type { Category } from "../../types/Category.ts";
 
 interface CategoryFormProps {
   initialData?: Category;
-  onSubmit: (category: Omit<Category, 'slug' | 'productsCount'>) => void;
+  onSubmit: (category: Category) => void;
   onCancel: () => void;
   isEditing?: boolean;
 }
@@ -24,8 +24,8 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, onSubmi
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const categoryData: Omit<Category, 'slug' | 'productsCount'> = {
-      id: initialData?.id || '', // id is included if editing
+    const categoryData: Category = {
+      id: initialData?.id, // id is included if editing, will be undefined for new categories
       name,
       description,
     };

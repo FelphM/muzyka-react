@@ -1,14 +1,12 @@
-import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-
-interface User {
-  username: string;
-  email: string;
-  role?: string;
-}
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import type { ReactNode } from 'react';
+import type { User } from '../types/User.ts'; // Import global User type
+import { login as apiLogin } from '../services/api'; // Import login function from api service
 
 interface IAuthContext {
   user: User | null;
-  login: (userData: User) => void;
+  token: string | null; // Add token to context
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -32,17 +30,45 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
-  const login = (userData: User) => {
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
+  const [token, setToken] = useState<string | null>(() => {
+    return localStorage.getItem('token');
+  });
+
+  // Effect to keep localStorage in sync with state
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('user');
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem('token', token);
+    } else {
+      localStorage.removeItem('token');
+    }
+  }, [token]);
+
+  const login = async (email: string, password: string) => {
+    try {
+      // apiLogin now returns an object with user and token
+      const { user: authenticatedUser, token: jwtToken } = await apiLogin({ email, password });
+      setUser(authenticatedUser);
+      setToken(jwtToken);
+    } catch (error) {
+      console.error("Login failed:", error);
+      throw error; // Re-throw to be caught by the calling component
+    }
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('user');
+    setToken(null);
   };
 
-  const value = { user, login, logout };
+  const value = { user, token, login, logout }; // Include token in context value
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

@@ -1,7 +1,5 @@
 export interface Category {
-  id: string;
+  id: number;
   name: string;
   description: string;
-  productsCount: number;
-  slug: string;
 }

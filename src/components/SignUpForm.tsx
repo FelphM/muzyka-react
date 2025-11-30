@@ -1,5 +1,6 @@
 import { useState, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { createUser } from "../services/api"; // Import createUser
 
 export function SignUpForm() {
   const [username, setUsername] = useState("");
@@ -7,23 +8,19 @@ export function SignUpForm() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleSignUp = (event: FormEvent) => {
+  const handleSignUp = async (event: FormEvent) => {
     event.preventDefault();
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    
-    const userExists = users.some((u: any) => u.username === username || u.email === email);
 
-    if (userExists) {
-      alert("User with this username or email already exists.");
-      return;
+    try {
+      // Call the createUser API function
+      await createUser({ name: username, email, password, role: "CUSTOMER", status: "ACTIVE" });
+
+      alert("Sign up successful! Please log in.");
+      navigate("/login");
+    } catch (error) {
+      console.error("Error signing up:", error);
+      alert("Error signing up. Please try again.");
     }
-
-    const newUser = { username, email, password };
-    users.push(newUser);
-    localStorage.setItem('users', JSON.stringify(users));
-
-    alert("Sign up successful! Please log in.");
-    navigate("/login");
   };
 
   return (

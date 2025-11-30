@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { MockData } from "../../services/api";
+import { MockData } from "../../services/MockData";
 import type { Post } from "../../types/BlogPost";
 import { PostCard } from "../PostCard";
 import "../../styles/blog.css"

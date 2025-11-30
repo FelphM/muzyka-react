@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { UserForm } from '../../components/admin/AddUserForm';
 import type { User } from '../../types/User.ts';
-import { getUsers, addUser, updateUser, deleteUser } from '../../services/db';
+import { getAllUsers, createUser, updateUser, deleteUser } from '../../services/api';
 import "../../styles/admin.css";
 
 export function UsersPage() {
@@ -11,25 +11,38 @@ export function UsersPage() {
   const [editingUser, setEditingUser] = useState<User | null>(null);
 
   useEffect(() => {
-    setUsers(getUsers());
+    fetchUsers();
   }, []);
 
-  const handleSubmitUser = (userData: Omit<User, 'joinDate' | 'lastLogin'>) => {
-    if (editingUser) {
-      // Update existing user
-      const updated = updateUser(userData as User);
-      if (updated) {
+  const fetchUsers = async () => {
+    try {
+      const data: User[] = await getAllUsers();
+      setUsers(data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      // Optionally, set users to empty array or display an error message
+      setUsers([]);
+    }
+  };
+
+  const handleSubmitUser = async (userData: User) => {
+    try {
+      if (editingUser) {
+        // Update existing user
+        const updated = await updateUser(editingUser.id as number, userData);
         setUsers((prevUsers) =>
           prevUsers.map((u) => (u.id === updated.id ? updated : u))
         );
+      } else {
+        // Add new user
+        const newlyAddedUser = await createUser(userData);
+        setUsers((prevUsers) => [...prevUsers, newlyAddedUser]);
       }
-    } else {
-      // Add new user
-      const newlyAddedUser = addUser(userData);
-      setUsers((prevUsers) => [...prevUsers, newlyAddedUser]);
+      setShowUserForm(false);
+      setEditingUser(null);
+    } catch (error) {
+      console.error("Error submitting user:", error);
     }
-    setShowUserForm(false);
-    setEditingUser(null);
   };
 
   const handleCancelForm = () => {
@@ -42,10 +55,14 @@ export function UsersPage() {
     setShowUserForm(true);
   };
 
-  const handleDeleteUser = (userId: string) => {
+  const handleDeleteUser = async (userId: number) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
-      deleteUser(userId);
-      setUsers((prevUsers) => prevUsers.filter((u) => u.id !== userId));
+      try {
+        await deleteUser(userId);
+        setUsers((prevUsers) => prevUsers.filter((u) => u.id !== userId));
+      } catch (error) {
+        console.error("Error deleting user:", error);
+      }
     }
   };
 
@@ -118,6 +135,8 @@ export function UsersPage() {
                           {user.status}
                         </span>
                       </td>
+                      <td>{user.joinDate}</td>
+                      <td>{user.lastLogin}</td>
                       <td>
                         <div className="table-actions">
                           <button className="action-button edit" onClick={() => handleEditClick(user)}>
@@ -125,7 +144,7 @@ export function UsersPage() {
                           </button>
                           <button
                             className="action-button delete"
-                            onClick={() => handleDeleteUser(user.id)}
+                            onClick={() => handleDeleteUser(user.id as number)}
                           >
                             <i className="fas fa-trash"></i>
                           </button>

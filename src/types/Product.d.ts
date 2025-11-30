@@ -5,16 +5,14 @@ type format = "Compact Disc"
               | "VHS";
 
 export type Product = {
-    id: string,
+    id: number,
     artist: string,
     name: string,
-    image: {
-        src: string,
-        alt: string
-    },
+    imageUrl: string,
+    imageAlt: string,
     price: number,
     format: format,
     description: string,
-    link: string,
+
     slug: string,
 };

@@ -14,11 +14,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <div className="ProductCard">
       <div className="ProductCardImageWrapper">
-        <img src={product.image.src} alt={product.image.alt} />
+        <img src={product.imageUrl} alt={product.imageAlt} />
       </div>
-      <a href={product.link} target="_blank" rel="noopener noreferrer" className="learnMore">
-        Learn more about this release
-      </a>
       <div className="product-info">
         <h3 className="product-name">{product.artist} - {product.name}</h3>
         <p className="product-price">${product.price.toFixed(2)} | {product.format}</p>

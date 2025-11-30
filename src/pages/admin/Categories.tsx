@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { CategoryForm } from '../../components/admin/AddCategoryForm';
-import type { Category } from '../../types/Category.ts';
-import { getCategories, addCategory, updateCategory, deleteCategory } from '../../services/db';
+import type { Category } from '../../types/Category';
+import { getAllCategories, createCategory, updateCategory, deleteCategory } from '../../services/api';
 import "../../styles/admin.css";
 
 export function CategoriesPage() {
@@ -10,25 +10,36 @@ export function CategoriesPage() {
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
 
   useEffect(() => {
-    setCategories(getCategories());
+    fetchCategories();
   }, []);
 
-  const handleSubmitCategory = (categoryData: Omit<Category, 'slug' | 'productsCount'>) => {
-    if (editingCategory) {
-      // Update existing category
-      const updated = updateCategory(categoryData as Category);
-      if (updated) {
+  const fetchCategories = async () => {
+    try {
+      const data: Category[] = await getAllCategories();
+      setCategories(data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+
+  const handleSubmitCategory = async (categoryData: Category) => {
+    try {
+      if (editingCategory) {
+        // Update existing category
+        const updated = await updateCategory(editingCategory.id as number, categoryData);
         setCategories((prevCategories) =>
           prevCategories.map((c) => (c.id === updated.id ? updated : c))
         );
+      } else {
+        // Add new category
+        const newlyAddedCategory = await createCategory(categoryData);
+        setCategories((prevCategories) => [...prevCategories, newlyAddedCategory]);
       }
-    } else {
-      // Add new category
-      const newlyAddedCategory = addCategory(categoryData);
-      setCategories((prevCategories) => [...prevCategories, newlyAddedCategory]);
+      setShowCategoryForm(false);
+      setEditingCategory(null);
+    } catch (error) {
+      console.error("Error submitting category:", error);
     }
-    setShowCategoryForm(false);
-    setEditingCategory(null);
   };
 
   const handleCancelForm = () => {
@@ -41,10 +52,14 @@ export function CategoriesPage() {
     setShowCategoryForm(true);
   };
 
-  const handleDeleteCategory = (categoryId: string) => {
+  const handleDeleteCategory = async (categoryId: number) => {
     if (window.confirm('Are you sure you want to delete this category?')) {
-      deleteCategory(categoryId);
-      setCategories((prevCategories) => prevCategories.filter((c) => c.id !== categoryId));
+      try {
+        await deleteCategory(categoryId);
+        setCategories((prevCategories) => prevCategories.filter((c) => c.id !== categoryId));
+      } catch (error) {
+        console.error("Error deleting category:", error);
+      }
     }
   };
 
@@ -85,20 +100,21 @@ export function CategoriesPage() {
                     </button>
                     <button
                       className="action-button delete"
-                      onClick={() => handleDeleteCategory(category.id)}
+                      onClick={() => handleDeleteCategory(category.id as number)}
                     >
                       <i className="fas fa-trash"></i>
                     </button>
                   </div>
                 </div>
                 <p className="category-description">{category.description}</p>
-                <div className="category-stats">
+                {/* Removed productsCount display as it's not in the backend entity */}
+                {/* <div className="category-stats">
                   <span className="products-count">
                     <i className="fas fa-compact-disc"></i>
                     {category.productsCount} Products
                   </span>
-                </div>
-                <button className="view-products-button">View Products</button>
+                </div> */}
+                {/* <button className="view-products-button">View Products</button> */}
               </div>
             ))}
           </div>

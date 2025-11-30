@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ProductForm } from "../../components/admin/AddProductForm";
 import type { Product } from "../../types/Product";
-import { getProducts, addProduct, updateProduct, deleteProduct } from '../../services/db';
+import { getAllProducts, createProduct, updateProduct, deleteProduct } from '../../services/api';
 import "../../styles/admin.css";
 
 export function ProductsPage() {
@@ -10,25 +10,36 @@ export function ProductsPage() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
   useEffect(() => {
-    setProducts(getProducts());
+    const fetchProducts = async () => {
+      try {
+        const data = await getAllProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+    fetchProducts();
   }, []);
 
-  const handleSubmitProduct = (productData: Omit<Product, 'slug'>) => {
-    if (editingProduct) {
-      // Update existing product
-      const updated = updateProduct(productData as Product);
-      if (updated) {
+  const handleSubmitProduct = async (productData: Omit<Product, 'slug' | 'id'> & { id?: number }) => {
+    try {
+      const slug = productData.name.toLowerCase().replace(/\s/g, '-');
+      if (editingProduct) {
+        const { id, ...rest } = productData;
+        const updated = await updateProduct(editingProduct.id, { ...rest, slug });
         setProducts((prevProducts) =>
           prevProducts.map((p) => (p.id === updated.id ? updated : p))
         );
+      } else {
+        const { id, ...rest } = productData;
+        const newlyAddedProduct = await createProduct({ ...rest, slug });
+        setProducts((prevProducts) => [...prevProducts, newlyAddedProduct]);
       }
-    } else {
-      // Add new product
-      const newlyAddedProduct = addProduct(productData);
-      setProducts((prevProducts) => [...prevProducts, newlyAddedProduct]);
+      setShowProductForm(false);
+      setEditingProduct(null);
+    } catch (error) {
+      console.error("Error saving product:", error);
     }
-    setShowProductForm(false);
-    setEditingProduct(null);
   };
 
   const handleCancelForm = () => {
@@ -41,10 +52,14 @@ export function ProductsPage() {
     setShowProductForm(true);
   };
 
-  const handleDeleteProduct = (productId: string) => {
+  const handleDeleteProduct = async (productId: number) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
-      deleteProduct(productId);
-      setProducts((prevProducts) => prevProducts.filter((p) => p.id !== productId));
+      try {
+        await deleteProduct(productId);
+        setProducts((prevProducts) => prevProducts.filter((p) => p.id !== productId));
+      } catch (error) {
+        console.error("Error deleting product:", error);
+      }
     }
   };
 
@@ -91,8 +106,8 @@ export function ProductsPage() {
                   <tr key={product.id}>
                     <td>
                       <img
-                        src={product.image.src}
-                        alt={product.image.alt}
+                        src={product.imageUrl}
+                        alt={product.imageAlt}
                         className="product-thumbnail"
                       />
                     </td>

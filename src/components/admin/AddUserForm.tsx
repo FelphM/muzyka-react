@@ -3,7 +3,7 @@ import type { User } from "../../types/User.ts";
 
 interface UserFormProps {
   initialData?: User;
-  onSubmit: (user: Omit<User, 'joinDate' | 'lastLogin'>) => void;
+  onSubmit: (user: User) => void;
   onCancel: () => void;
   isEditing?: boolean;
 }
@@ -33,18 +33,29 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, onSubmit, onCan
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const userData: Omit<User, 'joinDate' | 'lastLogin'> = {
-      id: initialData?.id || '', // id is included if editing
+    const userData: Partial<User> = { // Use Partial<User> because ID, joinDate, lastLogin might be missing
+      id: initialData?.id, // id is included if editing, will be undefined for new users
       name,
       email,
-      // For editing, if password is not changed, it remains empty and should ideally not update the backend password.
-      // For adding, a new password would be sent.
-      // In this mock, we just pass the current state of the password field.
-      // In a real app, you'd handle password updates carefully.
       role,
       status,
     };
-    onSubmit(userData);
+
+    if (password !== '') { // Only include password if it was entered
+        // For new user creation, 'password' field is expected (plain text)
+        // For existing user update, password changes should ideally be a separate API call
+        // For now, if editing and password is provided, we send it as 'password' field.
+        // Backend should handle this appropriately (e.g., hash it)
+        (userData as any).password = password; 
+    }
+    
+    // For update, joinDate and lastLogin should not be sent
+    if (!isEditing) {
+      (userData as User).joinDate = new Date().toISOString();
+      (userData as User).lastLogin = null;
+    }
+    
+    onSubmit(userData as User);
 
     if (!isEditing) {
       // Clear form fields only when adding a new user
