@@ -179,13 +179,20 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit,
         </div>
         <div className="form-group">
           <label htmlFor="format">Format:</label>
-          <input
-            type="text"
+          <select
             id="format"
             value={format}
             onChange={(e) => setFormat(e.target.value)}
             required
-          />
+          >
+            <option value="" disabled>Select a format</option>
+            <option value="Compact Disc">Compact Disc</option>
+            <option value="Vinyl">Vinyl</option>
+            <option value="Cassette">Cassette</option>
+            <option value="DVD">DVD</option>
+            <option value="VHS">VHS</option>
+            <option value="Blu-ray">Blu-ray</option>
+          </select>
         </div>
         <div className="form-group">
           <label htmlFor="description">Description:</label>
