@@ -118,12 +118,12 @@ export function UsersPage() {
               <tbody>
                 {users
                   .filter(user =>
-                    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    user.email.toLowerCase().includes(searchTerm.toLowerCase())
+                    (user.username || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      (user.email || '').toLowerCase().includes(searchTerm.toLowerCase())
                   )
                   .map((user) => (
                     <tr key={user.id}>
-                      <td>{user.name}</td>
+                        <td>{user.username}</td>
                       <td>{user.email}</td>
                       <td>
                         <span className={`role-badge ${user.role}`}>

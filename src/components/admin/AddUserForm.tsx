@@ -9,7 +9,7 @@ interface UserFormProps {
 }
 
 export const UserForm: React.FC<UserFormProps> = ({ initialData, onSubmit, onCancel, isEditing = false }) => {
-  const [name, setName] = useState(initialData?.name || '');
+  const [username, setUsername] = useState(initialData?.username || '');
   const [email, setEmail] = useState(initialData?.email || '');
   const [password, setPassword] = useState(''); // Password not pre-filled for security
   const [role, setRole] = useState<'admin' | 'customer'>(initialData?.role || 'customer');
@@ -17,13 +17,13 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, onSubmit, onCan
 
   useEffect(() => {
     if (initialData) {
-      setName(initialData.name);
+      setUsername(initialData.username);
       setEmail(initialData.email);
       setRole(initialData.role);
       setStatus(initialData.status);
       // Do not set password for security reasons
     } else {
-      setName('');
+      setUsername('');
       setEmail('');
       setPassword('');
       setRole('customer');
@@ -35,7 +35,7 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, onSubmit, onCan
     e.preventDefault();
     const userData: Partial<User> = { // Use Partial<User> because ID, joinDate, lastLogin might be missing
       id: initialData?.id, // id is included if editing, will be undefined for new users
-      name,
+      username,
       email,
       role,
       status,
@@ -51,8 +51,8 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, onSubmit, onCan
     
     // For update, joinDate and lastLogin should not be sent
     if (!isEditing) {
-      (userData as User).joinDate = new Date().toISOString();
-      (userData as User).lastLogin = null;
+      (userData as any).joinDate = new Date().toISOString();
+      (userData as any).lastLogin = null;
     }
     
     onSubmit(userData as User);
@@ -76,8 +76,8 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, onSubmit, onCan
           <input
             type="text"
             id="userName"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
