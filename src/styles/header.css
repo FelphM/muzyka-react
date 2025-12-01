@@ -1,7 +1,19 @@
 .nav-container {
   padding: 25px;
   border-bottom: 2px solid black;
-  position: relative;
+  display: flex; /* Use flexbox */
+  justify-content: space-between; /* Space out items */
+  align-items: center; /* Vertically align items */
+}
+
+.cart-icon-link:hover {
+  opacity: 0.7; /* Subtle hover effect */
+}
+
+.cart-icon {
+  width: 40px; /* Adjust size as needed */
+  height: 40px; /* Adjust size as needed */
+  vertical-align: middle; /* Align with text if necessary */
 }
 
 .hamburger-btn {

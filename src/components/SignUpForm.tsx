@@ -13,7 +13,7 @@ export function SignUpForm() {
 
     try {
       // Call the createUser API function
-      await createUser({ name: username, email, password, role: "CUSTOMER", status: "ACTIVE" });
+      await createUser({ username, email, password, role: "CUSTOMER", status: "ACTIVE" });
 
       alert("Sign up successful! Please log in.");
       navigate("/login");
@@ -51,7 +51,7 @@ export function SignUpForm() {
 
         <Link to="/login">Already have an account? Log in</Link>
 
-        <button type="submit">Registrarse</button>
+        <button type="submit" className="primaryButton">Registrarse</button>
       </form>
     </>
   );

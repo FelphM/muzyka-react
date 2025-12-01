@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "../styles/forms.css";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { updateUserProfile } from "../services/api";
 
 
 export function Profile() {
@@ -10,17 +11,25 @@ export function Profile() {
   const [userData, setUserData] = useState({
     username: "",
     email: "",
-    phone: "+56 9 1234 5678",
-    address: "123 Kennedy Avenue",
-    city: "Santiago",
-    stateProvince: "Metropolitan Region",
-    postalCode: "7500000",
+    phone: "",
+    address: "",
+    city: "",
+    stateProvince: "",
+    postalCode: "",
   });
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     if (user) {
-      setUserData(prev => ({ ...prev, username: user.username, email: user.email }));
+      setUserData({
+        username: user.username || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        address: user.address || "",
+        city: user.city || "",
+        stateProvince: user.stateProvince || "",
+        postalCode: user.postalCode || "",
+      });
     }
   }, [user]);
 
@@ -32,10 +41,23 @@ export function Profile() {
     }));
   };
 
-  const handleEditToggle = (e: { preventDefault: () => void }) => {
+  const handleEditToggle = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     if (isEditing) {
-      console.log("Saving user data:", userData);
+      try {
+        console.log("Saving user data:", userData);
+        const updatedUser = await updateUserProfile(userData);
+        //-TODO: research a better way to update the context
+        // temporary solution to update the user in the context
+        if (user) {
+          const newUserData = { ...user, ...updatedUser };
+          localStorage.setItem('user', JSON.stringify(newUserData));
+          window.location.reload();
+        }
+      } catch (error) {
+        console.error("Failed to update user profile:", error);
+        // Optionally, show an error message to the user
+      }
     }
     setIsEditing(!isEditing);
   };
@@ -43,7 +65,17 @@ export function Profile() {
   const handleCancel = (e: { preventDefault: () => void }) => {
     e.preventDefault();
     // Reset to the user data from context
-    if (user) setUserData(prev => ({ ...prev, username: user.username, email: user.email }));
+    if (user) {
+      setUserData({
+        username: user.username || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        address: user.address || "",
+        city: user.city || "",
+        stateProvince: user.stateProvince || "",
+        postalCode: user.postalCode || "",
+      });
+    }
     setIsEditing(false);
   };
 
@@ -55,7 +87,7 @@ export function Profile() {
 
   const handleChangePassword = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    console.log("Navigating to the Change Password page...");
+    navigate("/change-password");
   };
 
   return (
@@ -96,7 +128,7 @@ export function Profile() {
                 type="tel"
                 name="phone"
                 id="phone"
-                placeholder="+56 9 1234 5678"
+                placeholder="ej: +56 9 1234 5678"
                 value={userData.phone}
                 onChange={handleChange}
                 disabled={!isEditing}
@@ -105,17 +137,17 @@ export function Profile() {
 
             {!isEditing && (
               <>
-                <button onClick={handleChangePassword}>Change Password</button>
-                <button onClick={handleEditToggle}>Edit Info</button>
+                <button onClick={handleChangePassword} className="primaryButton">Change Password</button>
+                <button onClick={handleEditToggle} className="primaryButton">Edit Info</button>
               </>
             )}
 
             {isEditing && (
               <>
-                <button type="button" onClick={handleCancel}>
+                <button type="button" onClick={handleCancel} className="secondaryButton">
                   Cancel
                 </button>
-                <button type="submit" onClick={handleEditToggle}>
+                <button type="submit" onClick={handleEditToggle} className="primaryButton">
                   Save Changes
                 </button>
               </>
@@ -131,7 +163,7 @@ export function Profile() {
                 type="text"
                 name="address"
                 id="address"
-                placeholder="123 Main Street"
+                placeholder="ej: 123 Main Street"
                 value={userData.address}
                 onChange={handleChange}
                 disabled={!isEditing}
@@ -145,7 +177,7 @@ export function Profile() {
                 type="text"
                 name="city"
                 id="city"
-                placeholder="New York"
+                placeholder="ej: New York"
                 value={userData.city}
                 onChange={handleChange}
                 disabled={!isEditing}
@@ -158,7 +190,7 @@ export function Profile() {
                 type="text"
                 name="stateProvince"
                 id="stateProvince"
-                placeholder="NY"
+                placeholder="ej: NY"
                 value={userData.stateProvince}
                 onChange={handleChange}
                 disabled={!isEditing}
@@ -171,7 +203,7 @@ export function Profile() {
                 type="text"
                 name="postalCode"
                 id="postalCode"
-                placeholder="10001"
+                placeholder="ej: 10001"
                 value={userData.postalCode}
                 onChange={handleChange}
                 disabled={!isEditing}
@@ -186,12 +218,12 @@ export function Profile() {
         <section>
           <h2>⚙️ Account Actions</h2>
           <form onSubmit={handleLogout}>
-            <button type="submit" className="logoutButton">
+            <button type="submit" className="secondaryButton">
               Log Out
             </button>
           </form>
           <br />
-          <button className="deleteAccountButton">Delete Account</button>
+          <button className="secondaryButton">Delete Account</button>
         </section>
       </main>
     </>

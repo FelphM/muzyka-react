@@ -1,3 +1,4 @@
+import CartIconUrl from '../assets/cart-shopping-svgrepo-com.svg';
 import { Link } from "react-router-dom";
 import "../styles/header.css";
 import { useState, useEffect } from "react";
@@ -43,23 +44,20 @@ export function Header() {
           <Link to="/about">About Us</Link>
         </li>
         <li>
-          <Link to="/cart">Cart</Link>
-        </li>
-        <li>
           <Link to="/blog">Blog</Link>
         </li>
 
         {user ? (
           <>
             <li>
-              <Link to="/purchases">Purchases</Link>
+              <Link to="/purchases" onClick={() => setIsMenuOpen(false)}>Purchases</Link>
             </li>
             <li>
-              <Link to="/profile">My Profile</Link>
+              <Link to="/profile" onClick={() => setIsMenuOpen(false)}>My Profile</Link>
             </li>
             {user.role === 'admin' && (
               <li>
-                <Link to="/admin/dashboard">Admin</Link>
+                <Link to="/admin/dashboard" onClick={() => setIsMenuOpen(false)}>Admin</Link>
               </li>
             )}
             <li>
@@ -69,14 +67,15 @@ export function Header() {
         ) : (
           <>
             <li>
-              <Link to="/login">Login</Link>
+              <Link to="/login" onClick={() => setIsMenuOpen(false)}>Login</Link>
             </li>
             <li>
-              <Link to="/signup">Sign Up</Link>
+              <Link to="/signup" onClick={() => setIsMenuOpen(false)}>Sign Up</Link>
             </li>
           </>
         )}
       </ul>
+      <Link to="/cart" className="cart-icon-link" onClick={() => setIsMenuOpen(false)}><img src={CartIconUrl} alt="Cart" className="cart-icon"/></Link>
     </nav>
   );
 }

@@ -19,7 +19,7 @@ export function ResetForm() {
             required
           />
         </label>
-        <button type="submit">Send Code</button>
+        <button type="submit" className="primaryButton">Send Code</button>
         <Link to="/login">Return to Log In</Link>
         <Link to="/signup">You dont have an account? Sign Up!</Link>
       </form>

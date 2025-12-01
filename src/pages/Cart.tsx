@@ -35,7 +35,7 @@ const Cart: React.FC = () => {
       await createOrder(orderData);
       alert('Order placed successfully!');
       clearCart();
-      navigate('/profile'); // Redirect to a profile or orders page
+      navigate('/purchases'); // Redirect to the purchases page
     } catch (error) {
       console.error('Failed to create order:', error);
       alert('There was an error placing your order. Please try again.');
@@ -53,7 +53,7 @@ const Cart: React.FC = () => {
       ) : (
         <>
           <div className="cart-header">
-            <button onClick={clearCart} className="clear-cart-btn">Clear Cart</button>
+            <button onClick={clearCart} className="secondaryButton">Clear Cart</button>
           </div>
           <div className="cart-items">
             {cart.map(item => (
@@ -67,11 +67,11 @@ const Cart: React.FC = () => {
                     <p className="item-price">Price: ${item.price.toFixed(2)}</p>
                   </div>
                   <div className="quantity-controls">
-                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
+                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="quantityButton">-</button>
                     <span>Quantity: {item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
+                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)} className="quantityButton">+</button>
                   </div>
-                  <button onClick={() => removeFromCart(item.id)} className="remove-item">Remove</button>
+                  <button onClick={() => removeFromCart(item.id)} className="secondaryButton">Remove</button>
                 </div>
               </div>
             ))}
@@ -79,7 +79,7 @@ const Cart: React.FC = () => {
           <div className="cart-summary">
             <h2>Summary</h2>
             <p>Subtotal: <span>${subtotal.toFixed(2)}</span></p>
-            <button onClick={handleCheckout} className="checkout-btn">Proceed to Checkout</button>
+            <button onClick={handleCheckout} className="primaryButton">Proceed to Checkout</button>
           </div>
         </>
       )}

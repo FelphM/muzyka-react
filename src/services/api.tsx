@@ -199,6 +199,21 @@ export async function updateUser(id: number, userData: any) {
   return await response.json();
 }
 
+export async function updateUserProfile(userData: any) {
+  const response = await fetch(`${API_BASE_URL}/users/profile`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeader(),
+    },
+    body: JSON.stringify(userData),
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return await response.json();
+}
+
 export async function deleteUser(id: number) {
   const response = await fetch(`${API_BASE_URL}/users/${id}`, {
     method: "DELETE",
@@ -255,6 +270,18 @@ export async function updateOrderStatus(orderId: number, status: string) {
   return await response.json();
 }
 
+export async function getOrdersByUserId(userId: number) {
+  const response = await fetch(`${API_BASE_URL}/orders/user/${userId}`, {
+    headers: {
+      ...getAuthHeader(),
+    },
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return await response.json();
+}
+
 
 export async function login(credentials: { email: string; password: string; }): Promise<JwtResponse> {
   const response = await fetch(`${API_BASE_URL}/users/login`, {
@@ -268,4 +295,19 @@ export async function login(credentials: { email: string; password: string; }): 
     throw new Error(`HTTP error! status: ${response.status}`);
   }
   return await response.json();
+}
+
+export async function changePassword(email: string, currentPassword: string, newPassword: string): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/users/change-password`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeader(),
+    },
+    body: JSON.stringify({ email, currentPassword, newPassword }),
+  });
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+  }
 }

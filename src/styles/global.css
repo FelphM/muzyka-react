@@ -34,3 +34,56 @@ input:disabled {
   margin-bottom: 20px;
   padding: 10px;
 }
+
+/* Primary Button Style */
+.primaryButton {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+  background-color: #eb2525;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.primaryButton:hover {
+  background-color: #d81d1d;
+}
+
+/* Secondary Button Style */
+.secondaryButton {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+  background-color: white;
+  color: #eb2525;
+  border: 1px solid #eb2525;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.secondaryButton:hover {
+  background-color: #eb2525;
+  color: white;
+}
+
+/* Quantity Button Style */
+.quantityButton {
+  padding: 0.25rem 0.5rem;
+  font-size: 1rem;
+  width: 30px; /* Make them square */
+  height: 30px; /* Make them square */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantityButton:hover {
+  background-color: #e0e0e0;
+}

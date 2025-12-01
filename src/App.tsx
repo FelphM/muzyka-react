@@ -20,6 +20,8 @@ import { Profile } from './pages/Profile';
 import { ProductDetails } from './pages/ProductDetails';
 import { BlogPostDetails } from './pages/BlogPostDetails';
 import { NotFoundPage as NotFound } from './pages/404';
+import { ChangePassword } from './pages/ChangePassword'; // Import ChangePassword component
+import { PurchasesPage } from './pages/Purchases'; // Import PurchasesPage component
 
 // Admin Pages
 import { DashboardPage as AdminDashboard } from './pages/admin/Dashboard';
@@ -51,6 +53,8 @@ function App() {
               <Route path="signup" element={<SignUp />} />
               <Route path="reset-password" element={<ResetPassword />} />
               <Route path="profile" element={<Profile />} />
+              <Route path="change-password" element={<ChangePassword />} />
+              <Route path="purchases" element={<PurchasesPage />} />
               <Route path="product/:slug" element={<ProductDetails />} />
             </Route>
 

@@ -30,6 +30,22 @@
   flex: 1;
 }
 
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* Space between buttons and quantity */
+  margin-top: 0.5rem;
+}
+
+.quantity-controls span {
+  min-width: 30px; /* Ensure space for quantity text */
+  text-align: center;
+}
+
+.cart-item-details .secondaryButton {
+  margin-top: 0.5rem; /* Adjust this value as needed */
+}
+
 .cart-total {
   margin-top: 2rem;
   padding-top: 1rem;

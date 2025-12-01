@@ -49,7 +49,7 @@ export function ProductDetails() {
           <p className="description">{product.description}</p>
 
           <button 
-            className="addToCart" 
+            className="primaryButton" 
             onClick={() => addToCart(product)}
             disabled={product.stock === 0}
           >

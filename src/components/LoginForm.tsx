@@ -51,7 +51,7 @@ export function LoginForm() {
           <Link to="/reset">I forgot my password</Link>
         </label>
 
-        <button type="submit">Log In</button>
+        <button type="submit" className="primaryButton">Log In</button>
 
         <Link to="/signup">You dont have an account? Sign Up!</Link>
       </form>

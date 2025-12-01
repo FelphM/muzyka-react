@@ -25,7 +25,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <Link to={`/product/${product.slug}`} className="details-btn">
           Details
         </Link>
-        <button className="add-to-cart-btn" onClick={() => addToCart(product)}>
+        <button className="primaryButton" onClick={() => addToCart(product)}>
           Add To Cart
         </button>
       </div>

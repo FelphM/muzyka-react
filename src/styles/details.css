@@ -57,21 +57,7 @@
   text-decoration: underline;
 }
 
-.addToCart {
-  margin-top: 1rem;
-  padding: 0.75rem 1.5rem;
-  font-size: 1.1rem;
-  background-color: #eb2525;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
 
-.addToCart:hover {
-  background-color: #d81d1d;
-}
 
 .blogPost {
   max-width: 800px;
