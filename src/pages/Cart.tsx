@@ -1,23 +1,45 @@
 import React from 'react';
 import { useCart } from '../context/CartContext';
 import '../styles/cart.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { createOrder } from '../services/api';
 
 const Cart: React.FC = () => {
   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  const handleCheckout = () => {
-    // TODO: This is where you would initiate the checkout process.
-    // This could involve:
-    // 1. Validating the user is logged in.
-    // 2. Sending the cart data to the Spring Boot backend to create an order.
-    //    Example: api.post('/orders', { cartItems: cart });
-    // 3. Redirecting to a payment gateway or a success page.
-    alert('Proceeding to checkout is not implemented yet.');
-    // After successful checkout, you might want to clear the cart.
-    // clearCart();
+  const handleCheckout = async () => {
+    if (!user) {
+      alert('Please log in to proceed to checkout.');
+      navigate('/login');
+      return;
+    }
+    if (cart.length === 0) {
+      alert('Your cart is empty.');
+      return;
+    }
+
+    const orderData = {
+      userId: user.id,
+      items: cart.map(item => ({
+        productId: item.id,
+        quantity: item.quantity,
+      })),
+    };
+
+    try {
+      await createOrder(orderData);
+      alert('Order placed successfully!');
+      clearCart();
+      navigate('/profile'); // Redirect to a profile or orders page
+    } catch (error) {
+      console.error('Failed to create order:', error);
+      alert('There was an error placing your order. Please try again.');
+    }
   };
 
   return (

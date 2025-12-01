@@ -1,101 +1,100 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getAllOrders, updateOrderStatus } from '../../services/api';
+import type { PurchaseOrder } from '../../types/Order';
 import "../../styles/admin.css";
 
-interface Order {
-  id: string;
-  customerName: string;
-  date: string;
-  total: number;
-  status: 'pending' | 'processing' | 'completed' | 'cancelled';
-  items: Array<{
-    id: string;
-    name: string;
-    quantity: number;
-    price: number;
-  }>;
-}
-
 export function OrdersPage() {
-  const [orders] = useState<Order[]>([
-    {
-      id: "ORD001",
-      customerName: "John Doe",
-      date: "2025-10-28",
-      total: 129.99,
-      status: "pending",
-      items: [
-        { id: "1", name: "Jazz Collection Vol. 1", quantity: 1, price: 29.99 },
-        { id: "2", name: "Classic Rock Anthology", quantity: 2, price: 49.99 }
-      ]
-    },
-    // Add more sample orders as needed
-  ]);
-
+  const [orders, setOrders] = useState<PurchaseOrder[]>([]);
   const [filterStatus, setFilterStatus] = useState<string>('all');
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const data = await getAllOrders();
+        setOrders(data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+    fetchOrders();
+  }, []);
+
+  const handleStatusChange = async (orderId: number, newStatus: 'PENDING' | 'COMPLETED' | 'CANCELLED') => {
+    if (window.confirm(`Are you sure you want to mark order #${orderId} as ${newStatus}?`)) {
+      try {
+        const updatedOrder = await updateOrderStatus(orderId, newStatus);
+        setOrders(prevOrders =>
+          prevOrders.map(o => (o.id === updatedOrder.id ? updatedOrder : o))
+        );
+        alert(`Order #${orderId} has been marked as ${newStatus}.`);
+      } catch (error) {
+        console.error(`Error updating order status for order #${orderId}:`, error);
+        alert('Failed to update order status.');
+      }
+    }
+  };
 
   return (
     <>
-          <div className="admin-header">
-            <h1>Orders Management</h1>
-            <div className="admin-actions">
-              <select 
-                value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
-                className="filter-select"
-              >
-                <option value="all">All Orders</option>
-                <option value="pending">Pending</option>
-                <option value="processing">Processing</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
-              </select>
-            </div>
-          </div>
+      <div className="admin-header">
+        <h1>Orders Management</h1>
+        <div className="admin-actions">
+          <select 
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+            className="filter-select"
+          >
+            <option value="all">All Orders</option>
+            <option value="PENDING">Pending</option>
+            <option value="COMPLETED">Completed</option>
+            <option value="CANCELLED">Cancelled</option>
+          </select>
+        </div>
+      </div>
 
-          <div className="table-container">
-            <table className="admin-table">
-              <thead>
-                <tr>
-                  <th>Order ID</th>
-                  <th>Customer</th>
-                  <th>Date</th>
-                  <th>Total</th>
-                  <th>Status</th>
-                  <th>Actions</th>
+      <div className="table-container">
+        <table className="admin-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Date</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders
+              .filter(order => filterStatus === 'all' || order.status === filterStatus)
+              .map(order => (
+                <tr key={order.id}>
+                  <td>#{order.id}</td>
+                  <td>{order.userName}</td>
+                  <td>{new Date(order.orderDate).toLocaleDateString()}</td>
+                  <td>${order.totalPrice.toFixed(2)}</td>
+                  <td>
+                    <span className={`status-badge ${order.status.toLowerCase()}`}>
+                      {order.status}
+                    </span>
+                  </td>
+                  <td>
+                    <div className="table-actions">
+                      {order.status === 'PENDING' && (
+                        <button 
+                          className="action-button complete"
+                          onClick={() => handleStatusChange(order.id, 'COMPLETED')}
+                        >
+                          Mark as Completed
+                        </button>
+                      )}
+                    </div>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {orders
-                  .filter(order => filterStatus === 'all' || order.status === filterStatus)
-                  .map(order => (
-                    <tr key={order.id}>
-                      <td>{order.id}</td>
-                      <td>{order.customerName}</td>
-                      <td>{order.date}</td>
-                      <td>${order.total.toFixed(2)}</td>
-                      <td>
-                        <span className={`status-badge ${order.status}`}>
-                          {order.status}
-                        </span>
-                      </td>
-                      <td>
-                        <div className="table-actions">
-                          <button className="action-button view">
-                            <i className="fas fa-eye"></i>
-                          </button>
-                          <button className="action-button edit">
-                            <i className="fas fa-edit"></i>
-                          </button>
-                          <button className="action-button delete">
-                            <i className="fas fa-trash"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 }

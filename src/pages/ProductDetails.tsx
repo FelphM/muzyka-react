@@ -44,10 +44,17 @@ export function ProductDetails() {
           <div className="productMeta">
             <p className="price">${product.price}</p>
             <p className="format">{product.format}</p>
+            <p className="stock">Stock: {product.stock > 0 ? product.stock : 'Out of Stock'}</p>
           </div>
           <p className="description">{product.description}</p>
 
-          <button className="addToCart" onClick={() => addToCart(product)}>Add To Cart</button>
+          <button 
+            className="addToCart" 
+            onClick={() => addToCart(product)}
+            disabled={product.stock === 0}
+          >
+            {product.stock > 0 ? 'Add To Cart' : 'Out of Stock'}
+          </button>
         </div>
       </article>
     </>

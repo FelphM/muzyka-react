@@ -10,8 +10,8 @@ export interface CartItem extends Product {
 interface ICartContext {
   cart: CartItem[];
   addToCart: (product: Product) => void;
-  removeFromCart: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
+  removeFromCart: (productId: number) => void;
+  updateQuantity: (productId: number, quantity: number) => void;
   clearCart: () => void;
   itemCount: number;
 }
@@ -58,14 +58,14 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
   };
 
   // Function to remove a product from the cart
-  const removeFromCart = (productId: string) => {
+  const removeFromCart = (productId: number) => {
     setCart(prevCart => prevCart.filter(item => item.id !== productId));
     // TODO: Also call your backend to remove the item from the persistent cart.
     // Example: api.delete(`/cart/remove/${productId}`);
   };
 
   // Function to update the quantity of a product
-  const updateQuantity = (productId: string, quantity: number) => {
+  const updateQuantity = (productId: number, quantity: number) => {
     if (quantity <= 0) {
       removeFromCart(productId);
     } else {

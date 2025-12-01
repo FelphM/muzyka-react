@@ -212,6 +212,50 @@ export async function deleteUser(id: number) {
   return response.status;
 }
 
+// --- Order Management API Calls ---
+export async function createOrder(orderData: { userId: number; items: { productId: number; quantity: number }[] }) {
+  const response = await fetch(`${API_BASE_URL}/orders`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeader(),
+    },
+    body: JSON.stringify(orderData),
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return await response.json();
+}
+
+export async function getAllOrders() {
+  const response = await fetch(`${API_BASE_URL}/orders`, {
+    headers: {
+      ...getAuthHeader(),
+    },
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return await response.json();
+}
+
+export async function updateOrderStatus(orderId: number, status: string) {
+  const response = await fetch(`${API_BASE_URL}/orders/${orderId}/status`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      ...getAuthHeader(),
+    },
+    body: JSON.stringify({ status }),
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return await response.json();
+}
+
+
 export async function login(credentials: { email: string; password: string; }): Promise<JwtResponse> {
   const response = await fetch(`${API_BASE_URL}/users/login`, {
     method: "POST",

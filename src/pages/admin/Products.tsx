@@ -97,7 +97,9 @@ export function ProductsPage() {
                   <th>Name</th>
                   <th>Artist</th>
                   <th>Format</th>
-                  <th>Price</th>
+                  <th>Price/Unit</th>
+                  <th>Stock</th>
+                  <th>Total Price</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -115,6 +117,8 @@ export function ProductsPage() {
                     <td>{product.artist}</td>
                     <td>{product.format}</td>
                     <td>${product.price.toFixed(2)}</td>
+                    <td>{product.stock}</td>
+                    <td>${(product.price * product.stock).toFixed(2)}</td>
                     <td>
                       <div className="table-actions">
                         <button className="action-button edit" onClick={() => handleEditClick(product)}>

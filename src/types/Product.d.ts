@@ -17,4 +17,5 @@ export type Product = {
     description: string,
     category: Category,
     slug: string,
+    stock: number,
 };

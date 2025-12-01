@@ -1,7 +1,75 @@
+import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
+import { getAllOrders } from '../../services/api';
+import type { PurchaseOrder, OrderItem } from '../../types/Order';
 import "../../styles/dashboard.css";
 
 export function DashboardPage() {
+  const [orders, setOrders] = useState<PurchaseOrder[]>([]);
+  const [todaysSales, setTodaysSales] = useState(0);
+  const [monthlySales, setMonthlySales] = useState(0);
+  const [pendingOrdersCount, setPendingOrdersCount] = useState(0);
+  const [popularProducts, setPopularProducts] = useState<{ id: number, name: string, sales: number }[]>([]);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const data = await getAllOrders();
+        setOrders(data);
+        calculateStats(data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    };
+    fetchOrders();
+  }, []);
+
+  const calculateStats = (orders: PurchaseOrder[]) => {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const month = now.getMonth();
+    
+    let todayS = 0;
+    let monthS = 0;
+    let pending = 0;
+
+    const productSales: { [key: string]: { id: number, name: string, sales: number } } = {};
+
+    orders.forEach(order => {
+      const orderDate = new Date(order.orderDate);
+      if (orderDate >= today) {
+        todayS += order.totalPrice;
+      }
+      if (orderDate.getMonth() === month) {
+        monthS += order.totalPrice;
+      }
+      if (order.status === 'PENDING') {
+        pending++;
+      }
+
+      order.items.forEach(item => {
+        if (productSales[item.productName]) {
+          productSales[item.productName].sales += item.quantity;
+        } else {
+          productSales[item.productName] = { id: item.productId, name: item.productName, sales: item.quantity };
+        }
+      });
+    });
+
+    const sortedPopularProducts = Object.values(productSales)
+      .sort((a, b) => b.sales - a.sales)
+      .slice(0, 5);
+
+    setPopularProducts(sortedPopularProducts);
+    setTodaysSales(todayS);
+    setMonthlySales(monthS);
+    setPendingOrdersCount(pending);
+  };
+
+  const recentOrders = [...orders]
+    .sort((a, b) => new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime())
+    .slice(0, 5);
+
   return (
     <>
         <h1>Admin Dashboard</h1>
@@ -13,15 +81,15 @@ export function DashboardPage() {
             <div className="stats-grid">
               <div className="stat-item">
                 <h3>Today's Sales</h3>
-                <p className="stat-value">$1,234.56</p>
+                <p className="stat-value">${todaysSales.toFixed(2)}</p>
               </div>
               <div className="stat-item">
                 <h3>Monthly Sales</h3>
-                <p className="stat-value">$45,678.90</p>
+                <p className="stat-value">${monthlySales.toFixed(2)}</p>
               </div>
               <div className="stat-item">
                 <h3>Orders Pending</h3>
-                <p className="stat-value">23</p>
+                <p className="stat-value">{pendingOrdersCount}</p>
               </div>
             </div>
             <Link to="/admin/reports" className="view-more">View Detailed Reports →</Link>
@@ -31,16 +99,19 @@ export function DashboardPage() {
           <section className="dashboard-card recent-orders">
             <h2>Recent Orders</h2>
             <div className="orders-list">
-              <div className="order-item">
-                <span className="order-id">#12345</span>
-                <span className="order-date">28 Oct 2025</span>
-                <span className="order-status pending">Pending</span>
-              </div>
-              <div className="order-item">
-                <span className="order-id">#12344</span>
-                <span className="order-date">28 Oct 2025</span>
-                <span className="order-status completed">Completed</span>
+              {recentOrders.map(order => (
+                <div className="order-item" key={order.id}>
+                  <div className="order-info">
+                    <span className="order-id">#{order.id}</span>
+                    <span className="order-user">{order.userName}</span>
+                    <span className="order-date">{new Date(order.orderDate).toLocaleDateString()}</span>
+                  </div>
+                  <div className="order-details">
+                    <span className="order-price">${order.totalPrice.toFixed(2)}</span>
+                    <span className={`order-status ${order.status.toLowerCase()}`}>{order.status}</span>
+                  </div>
                 </div>
+              ))}
             </div>
             <Link to="/admin/orders" className="view-more">Manage Orders →</Link>
           </section>
@@ -49,14 +120,12 @@ export function DashboardPage() {
           <section className="dashboard-card popular-products">
             <h2>Popular Products</h2>
             <div className="products-list">
-              <div className="product-item">
-                <span className="product-name">Jazz Collection Vol. 1</span>
-                <span className="product-sales">243 sales</span>
-              </div>
-              <div className="product-item">
-                <span className="product-name">Classic Rock Anthology</span>
-                <span className="product-sales">198 sales</span>
-              </div>
+              {popularProducts.map((product) => (
+                <div className="product-item" key={product.id}>
+                  <span className="product-name">{product.name}</span>
+                  <span className="product-sales">{product.sales} sales</span>
+                </div>
+              ))}
             </div>
             <Link to="/admin/products" className="view-more">View All Products →</Link>
           </section>

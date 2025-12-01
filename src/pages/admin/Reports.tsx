@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getAllOrders } from '../../services/api';
+import type { PurchaseOrder } from '../../types/Order';
 import "../../styles/admin.css";
 
 interface SalesData {
@@ -17,35 +19,69 @@ interface TopProduct {
 
 export function ReportsPage() {
   const [dateRange, setDateRange] = useState('month');
-  const [salesData] = useState<SalesData[]>([
-    {
-      period: "October 2025",
-      revenue: 15780.45,
-      orders: 234,
-      averageOrder: 67.44
-    },
-    {
-      period: "September 2025",
-      revenue: 14560.30,
-      orders: 212,
-      averageOrder: 68.68
-    }
-  ]);
+  const [salesData, setSalesData] = useState<SalesData[]>([]);
+  const [topProducts, setTopProducts] = useState<TopProduct[]>([]);
 
-  const [topProducts] = useState<TopProduct[]>([
-    {
-      id: "1",
-      name: "Jazz Collection Vol. 1",
-      sales: 45,
-      revenue: 1349.55
-    },
-    {
-      id: "2",
-      name: "Classical Masterpieces",
-      sales: 38,
-      revenue: 1139.62
-    }
-  ]);
+  useEffect(() => {
+    const fetchOrdersAndCalculateReports = async () => {
+      try {
+        const orders: PurchaseOrder[] = await getAllOrders();
+        
+        // Calculate Sales Data by month
+        const monthlySales: { [key: string]: { revenue: number, ordersCount: number } } = {};
+
+        orders.forEach(order => {
+          const orderDate = new Date(order.orderDate);
+          const month = orderDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+          
+          if (!monthlySales[month]) {
+            monthlySales[month] = { revenue: 0, ordersCount: 0 };
+          }
+          
+          monthlySales[month].revenue += order.totalPrice;
+          monthlySales[month].ordersCount += 1;
+        });
+
+        const salesDataArray = Object.keys(monthlySales).map(month => ({
+          period: month,
+          revenue: monthlySales[month].revenue,
+          orders: monthlySales[month].ordersCount,
+          averageOrder: monthlySales[month].revenue / monthlySales[month].ordersCount,
+        }));
+
+        setSalesData(salesDataArray);
+
+        // Calculate Top Selling Products
+        const productSales: { [key: string]: { id: string, name: string, sales: number, revenue: number } } = {};
+        orders.forEach(order => {
+          order.items.forEach(item => {
+            if (productSales[item.productName]) {
+              productSales[item.productName].sales += item.quantity;
+              productSales[item.productName].revenue += item.price * item.quantity;
+            } else {
+              productSales[item.productName] = { 
+                id: String(item.productId), 
+                name: item.productName, 
+                sales: item.quantity,
+                revenue: item.price * item.quantity
+              };
+            }
+          });
+        });
+
+        const sortedTopProducts = Object.values(productSales)
+          .sort((a, b) => b.sales - a.sales)
+          .slice(0, 5);
+        
+        setTopProducts(sortedTopProducts);
+
+      } catch (error) {
+        console.error("Error fetching or processing orders for reports:", error);
+      }
+    };
+
+    fetchOrdersAndCalculateReports();
+  }, []);
 
   return (
     <>

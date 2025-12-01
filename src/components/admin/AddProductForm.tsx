@@ -19,6 +19,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit,
   const [format, setFormat] = useState(initialData?.format || '');
   const [description, setDescription] = useState(initialData?.description || '');
   const [categoryId, setCategoryId] = useState<number | ''>(initialData?.category.id || '');
+  const [stock, setStock] = useState<number>(initialData?.stock || 0);
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
@@ -43,6 +44,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit,
       setFormat(initialData.format);
       setDescription(initialData.description);
       setCategoryId(initialData.category.id);
+      setStock(initialData.stock);
     } else {
       setName('');
       setArtist('');
@@ -52,6 +54,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit,
       setFormat('');
       setDescription('');
       setCategoryId('');
+      setStock(0);
     }
   }, [initialData]);
 
@@ -70,6 +73,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit,
       price,
       format,
       description,
+      stock,
       category: selectedCategory,
     };
     if (isEditing) {
@@ -87,6 +91,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit,
       setFormat('');
       setDescription('');
       setCategoryId('');
+      setStock(0);
     }
   };
 
@@ -159,6 +164,17 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit,
             onChange={(e) => setPrice(parseFloat(e.target.value))}
             required
             step="0.01"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="stock">Stock:</label>
+          <input
+            type="number"
+            id="stock"
+            value={stock}
+            onChange={(e) => setStock(parseInt(e.target.value, 10))}
+            required
+            step="1"
           />
         </div>
         <div className="form-group">
