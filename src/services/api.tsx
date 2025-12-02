@@ -1,6 +1,6 @@
 import type { User } from '../types/User'; // Import User type
 
-const API_BASE_URL = "http://localhost:5600/api/v1";
+const API_BASE_URL = "https://muzyka-backend.onrender.com/api/v1";
 
 interface JwtResponse {
   token: string;
