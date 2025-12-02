@@ -37,7 +37,7 @@ const BlogForm: React.FC<BlogFormProps> = ({ initialPost, onSubmit, onCancel }) 
       card: {
         title: cardTitle,
         author: cardAuthor,
-        // date will be set by backend or logic outside this form
+          date: new Date(), // set current date when creating/editing from the form
         brief: cardBrief,
       },
       post: {

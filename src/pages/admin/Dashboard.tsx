@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import { getAllOrders } from '../../services/api';
-import type { PurchaseOrder, OrderItem } from '../../types/Order';
+import type { PurchaseOrder } from '../../types/Order';
 import "../../styles/dashboard.css";
 
 export function DashboardPage() {

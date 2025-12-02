@@ -12,34 +12,34 @@ interface PurchaseItem extends Product {
 export function PurchasesPage() {
   const [purchases] = useState<PurchaseItem[]>([
     {
-      id: "1",
+      id: 1,
       artist: "Various Artists",
       name: "Best Guitar Collection",
-      image: {
-        src: "https://m.media-amazon.com/images/I/81MTidc4APL._UF894,1000_QL80_.jpg",
-        alt: "Best Guitar Collection Album",
-      },
+      imageUrl: "https://m.media-amazon.com/images/I/81MTidc4APL._UF894,1000_QL80_.jpg",
+      imageAlt: "Best Guitar Collection Album",
       price: 15.99,
       format: "Compact Disc",
       description: "A collection of the best guitar performances",
       link: "/products/best-guitar-collection",
       slug: "best-guitar-collection",
+      category: { id: 1, name: 'Rock', description: 'Classic Rock' },
+      stock: 10,
       purchaseDate: "2025-10-25",
       status: "Delivered",
     },
     {
-      id: "2",
+      id: 2,
       artist: "Jazz Masters",
       name: "Bass Classics",
-      image: {
-        src: "https://i.scdn.co/image/ab67616d0000b2732de387a6e4905651da9d93ac",
-        alt: "Bass Classics Album",
-      },
+      imageUrl: "https://i.scdn.co/image/ab67616d0000b2732de387a6e4905651da9d93ac",
+      imageAlt: "Bass Classics Album",
       price: 599.99,
       format: "Long Play",
       description: "Classic bass performances from jazz legends",
       link: "/products/bass-classics",
       slug: "bass-classics",
+      category: { id: 1, name: 'Rock', description: 'Classic Rock' },
+      stock: 5,
       purchaseDate: "2025-10-20",
       status: "In Transit",
     },
@@ -56,8 +56,8 @@ export function PurchasesPage() {
             <div key={product.id} className="purchase-item">
               <div className="purchase-details">
                 <img
-                  src={product.image.src}
-                  alt={product.image.alt}
+                  src={product.imageUrl}
+                  alt={product.imageAlt}
                   className="purchase-image"
                 />
                 <div className="purchase-info">

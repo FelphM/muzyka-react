@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { FloatingUp } from "../components/FloatingUp";
 import { SearchBar } from "../components/SearchBar";
 import { PostList } from "../components/sets/PostList";
@@ -118,12 +118,11 @@ export function BlogPage() {
 
         {!showForm && (
           <PostList
-            searchTerm={searchTerm}
-            posts={posts}
-            setPosts={setPosts}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
+              searchTerm={searchTerm}
+              posts={posts}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
         )}
       </div>
     </>

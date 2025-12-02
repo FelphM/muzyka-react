@@ -3,17 +3,15 @@ import type { Post } from "../../types/BlogPost";
 import { PostCard } from "../PostCard";
 import "../../styles/blog.css";
 import { useAuth } from '../../context/AuthContext'; // Import useAuth
-import { getAllBlogPosts } from '../../services/blogApi'; // Import the new blog API service
 
 interface PostListProps {
     searchTerm: string;
     onEdit: (post: Post) => void;
     onDelete: (postId: string) => void;
     posts: Post[]; // Receive posts as a prop from parent Blog page
-    setPosts: React.Dispatch<React.SetStateAction<Post[]>>; // Receive setPosts from parent
 }
 
-export function PostList({ searchTerm, onEdit, onDelete, posts, setPosts }: PostListProps) {
+export function PostList({ searchTerm, onEdit, onDelete, posts }: PostListProps) {
     const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
     const { user } = useAuth(); // Get user from AuthContext
     const isAdmin = user?.role === 'admin';
@@ -32,13 +30,7 @@ export function PostList({ searchTerm, onEdit, onDelete, posts, setPosts }: Post
         }
     }, [searchTerm, posts]);
 
-    const formatDate = (date: Date) => {
-        return new Intl.DateTimeFormat('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-        }).format(date);
-    };
+    // formatDate removed (not used)
 
     return (
         <section className="PostList fullContent">

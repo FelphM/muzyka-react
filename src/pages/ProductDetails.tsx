@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import type { Product } from '../types/Product';
 import { useParams } from "react-router-dom";
 import { FloatingUp } from "../components/FloatingUp";
 import { Breadcrumb } from "../components/Breadcrumb";

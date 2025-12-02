@@ -16,7 +16,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit,
   const [imageUrl, setImageUrl] = useState(initialData?.imageUrl || '');
   const [imageAlt, setImageAlt] = useState(initialData?.imageAlt || '');
   const [price, setPrice] = useState<number>(initialData?.price || 0);
-  const [format, setFormat] = useState(initialData?.format || '');
+  const [format, setFormat] = useState<Product['format']>(initialData?.format || 'Compact Disc');
   const [description, setDescription] = useState(initialData?.description || '');
   const [categoryId, setCategoryId] = useState<number | ''>(initialData?.category.id || '');
   const [stock, setStock] = useState<number>(initialData?.stock || 0);
@@ -38,8 +38,8 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit,
     if (initialData) {
       setName(initialData.name);
       setArtist(initialData.artist);
-      setImageUrl(initialData.imageUrl);
-      setImageAlt(initialData.imageAlt);
+      setImageUrl(initialData.imageUrl ?? '');
+      setImageAlt(initialData.imageAlt ?? '');
       setPrice(initialData.price);
       setFormat(initialData.format);
       setDescription(initialData.description);
@@ -51,7 +51,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit,
       setImageUrl('');
       setImageAlt('');
       setPrice(0);
-      setFormat('');
+      setFormat('Compact Disc');
       setDescription('');
       setCategoryId('');
       setStock(0);
@@ -88,7 +88,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit,
       setImageUrl('');
       setImageAlt('');
       setPrice(0);
-      setFormat('');
+      setFormat('Compact Disc');
       setDescription('');
       setCategoryId('');
       setStock(0);
@@ -182,7 +182,7 @@ export const ProductForm: React.FC<ProductFormProps> = ({ initialData, onSubmit,
           <select
             id="format"
             value={format}
-            onChange={(e) => setFormat(e.target.value)}
+            onChange={(e) => setFormat(e.target.value as Product['format'])}
             required
           >
             <option value="" disabled>Select a format</option>

@@ -25,7 +25,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData, onSubmi
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const categoryData: Category = {
-      id: initialData?.id, // id is included if editing, will be undefined for new categories
+      id: initialData?.id ?? Date.now(), // assign a numeric id if creating new
       name,
       description,
     };
