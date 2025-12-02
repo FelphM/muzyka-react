@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../styles/FloatingUp.css"; // Asegúrate de crear este archivo CSS
+import "../styles/floatingUp.css"; // match actual filename casing on disk
 
 interface FloatingUpProps {
   /** Porcentaje de la página que debe desplazarse antes de que aparezca el botón (0.3 = 30%) */
