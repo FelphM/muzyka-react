@@ -1,26 +1,69 @@
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { FloatingUp } from "../components/FloatingUp";
 import { Breadcrumb } from "../components/Breadcrumb";
-import "../styles/details.css";
+import { getBlogPostById } from "../services/blogApi";
 import type { Post } from "../types/BlogPost";
-import { getPosts } from "../services/db";
+import "../styles/details.css";
 
 export function BlogPostDetails() {
-  const { slug } = useParams();
-  const posts = getPosts();
-  const post = posts.find((p: Post) => p.id === slug);
+  const { postId } = useParams<{ postId: string }>();
+  const [post, setPost] = useState<Post | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!postId) {
+      setError("Post ID is missing.");
+      setLoading(false);
+      return;
+    }
+
+    const fetchPost = async () => {
+      setLoading(true);
+      try {
+        const fetchedPost = await getBlogPostById(postId);
+        if (fetchedPost) {
+          setPost({
+            ...fetchedPost,
+            card: {
+              ...fetchedPost.card,
+              date: new Date(fetchedPost.card.date), // Ensure date is a Date object
+            }
+          });
+        } else {
+          setError("Post not found.");
+        }
+      } catch (err) {
+        console.error("Failed to fetch post:", err);
+        setError("Failed to load the blog post.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPost();
+  }, [postId]);
+
+  if (loading) {
+    return <div className="centerContent">Loading post...</div>;
+  }
+
+  if (error) {
+    return <div className="centerContent error-message">{error}</div>;
+  }
 
   if (!post) {
-    return <div>Post not found</div>;
+    return <div className="centerContent">Post not found.</div>;
   }
 
   return (
     <>
       <FloatingUp />
-      <Breadcrumb 
+      <Breadcrumb
         items={[
           { label: "Blog", path: "/blog" },
-          { label: post.post.title, path: `/blog/${post.id}` }
+          { label: post.post.title, path: `/blog/${post.id}` },
         ]}
       />
       <article className="blogPost">
@@ -39,9 +82,7 @@ export function BlogPostDetails() {
           </p>
         </div>
         <div className="postContent">
-          {post.post.content.map((content, index) => (
-            <div key={index}>{content}</div>
-          ))}
+          {post.post.content}
         </div>
       </article>
     </>
