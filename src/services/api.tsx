@@ -139,7 +139,9 @@ export async function deleteCategory(id: number) {
     },
   });
   if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+    const error: any = new Error(`HTTP error! status: ${response.status}`);
+    error.response = response; // Attach response to the error object
+    throw error;
   }
   return response.status;
 }

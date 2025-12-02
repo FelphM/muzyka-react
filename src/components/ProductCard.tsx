@@ -25,9 +25,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <Link to={`/product/${product.slug}`} className="details-btn">
           Details
         </Link>
-        <button className="primaryButton" onClick={() => addToCart(product)}>
-          Add To Cart
-        </button>
+        {product.stock > 0 ? (
+          <button className="primaryButton" onClick={() => addToCart(product)}>
+            Add To Cart
+          </button>
+        ) : (
+          <button className="primaryButton out-of-stock-btn" disabled>
+            Out of Stock
+          </button>
+        )}
       </div>
     </div>
   );

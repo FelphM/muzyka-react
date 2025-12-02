@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import "../styles/header.css";
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useCart } from "../context/CartContext";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout } = useAuth();
+  const { itemCount } = useCart();
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -75,7 +77,12 @@ export function Header() {
           </>
         )}
       </ul>
-      <Link to="/cart" className="cart-icon-link" onClick={() => setIsMenuOpen(false)}><img src={CartIconUrl} alt="Cart" className="cart-icon"/></Link>
+      <Link to="/cart" className="cart-icon-link" onClick={() => setIsMenuOpen(false)}>
+        <div className="cart-wrapper">
+          <img src={CartIconUrl} alt="Cart" className="cart-icon"/>
+          {itemCount > 0 && <span className="cart-badge">{itemCount}</span>}
+        </div>
+      </Link>
     </nav>
   );
 }

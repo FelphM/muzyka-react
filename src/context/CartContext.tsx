@@ -42,19 +42,18 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     setCart(prevCart => {
       const existingItem = prevCart.find(item => item.id === product.id);
       if (existingItem) {
-        // If item exists, update its quantity
-        return prevCart.map(item =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
+        if (existingItem.quantity < product.stock) {
+          return prevCart.map(item =>
+            item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          );
+        } else {
+          alert(`You cannot add more of ${product.name}. Stock limit reached.`);
+          return prevCart;
+        }
       } else {
-        // If item doesn't exist, add it to the cart
         return [...prevCart, { ...product, quantity: 1 }];
       }
     });
-
-    // TODO: After updating local state, send a request to your Spring Boot backend
-    // to persist the cart for the logged-in user.
-    // Example: api.post('/cart/add', { productId: product.id, quantity: 1 });
   };
 
   // Function to remove a product from the cart

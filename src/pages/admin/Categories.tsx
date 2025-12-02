@@ -4,10 +4,16 @@ import type { Category } from '../../types/Category';
 import { getAllCategories, createCategory, updateCategory, deleteCategory } from '../../services/api';
 import "../../styles/admin.css";
 
+interface DeletionError {
+  message: string;
+  details?: string[];
+}
+
 export function CategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [showCategoryForm, setShowCategoryForm] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+  const [deletionError, setDeletionError] = useState<DeletionError | null>(null);
 
   useEffect(() => {
     fetchCategories();
@@ -57,8 +63,18 @@ export function CategoriesPage() {
       try {
         await deleteCategory(categoryId);
         setCategories((prevCategories) => prevCategories.filter((c) => c.id !== categoryId));
-      } catch (error) {
-        console.error("Error deleting category:", error);
+        setDeletionError(null);
+      } catch (error: any) {
+        if (error.response && error.response.status === 409) {
+          const errorData = await error.response.json();
+          setDeletionError({
+            message: errorData.message || 'This category is in use and cannot be deleted.',
+            details: errorData.details,
+          });
+        } else {
+          setDeletionError({ message: 'An unexpected error occurred. Please try again.' });
+          console.error("Error deleting category:", error);
+        }
       }
     }
   };
@@ -79,6 +95,23 @@ export function CategoriesPage() {
               </button>
             </div>
           </div>
+
+          {deletionError && (
+            <div className="error-alert">
+              <p>{deletionError.message}</p>
+              {deletionError.details && deletionError.details.length > 0 && (
+                <>
+                  <p>Associated products:</p>
+                  <ul>
+                    {deletionError.details.map((productName, index) => (
+                      <li key={index}>{productName}</li>
+                    ))}
+                  </ul>
+                </>
+              )}
+              <button onClick={() => setDeletionError(null)}>Dismiss</button>
+            </div>
+          )}
 
           {showCategoryForm && (
             <CategoryForm
@@ -107,14 +140,6 @@ export function CategoriesPage() {
                   </div>
                 </div>
                 <p className="category-description">{category.description}</p>
-                {/* Removed productsCount display as it's not in the backend entity */}
-                {/* <div className="category-stats">
-                  <span className="products-count">
-                    <i className="fas fa-compact-disc"></i>
-                    {category.productsCount} Products
-                  </span>
-                </div> */}
-                {/* <button className="view-products-button">View Products</button> */}
               </div>
             ))}
           </div>

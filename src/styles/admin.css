@@ -1,3 +1,31 @@
+.error-alert {
+  background-color: #fee2e2;
+  color: #991b1b;
+  padding: 1rem;
+  border: 1px solid #ef4444;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.error-alert p {
+  margin: 0;
+}
+
+.error-alert ul {
+  margin-top: 0.5rem;
+  padding-left: 1.5rem;
+}
+
+.error-alert button {
+  background-color: transparent;
+  color: #991b1b;
+  border: 1px solid #991b1b;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
 /* Common Admin Layout */
 .admin-container {
   display: flex;
@@ -81,6 +109,10 @@
 .admin-table {
   width: 100%;
   border-collapse: collapse;
+  /* Use fixed layout so very long words don't expand the table width
+     and cause the page to scroll horizontally. Columns will respect
+     specified widths and overflow will be clipped with ellipsis. */
+  table-layout: fixed;
 }
 
 .admin-table th,
@@ -88,6 +120,9 @@
   padding: 1rem;
   text-align: left;
   border-bottom: 1px solid #eee;
+  overflow: hidden; /* ensure cell content doesn't overflow */
+  text-overflow: ellipsis;
+  white-space: nowrap; /* keep single-line truncation in table cells */
 }
 
 .admin-table th {
@@ -98,6 +133,19 @@
 .admin-table tbody tr:hover {
   background-color: #f8f9fa;
 }
+
+/* Specific column width controls to keep layout stable. Adjust as needed. */
+.admin-table th:nth-child(2), /* Name */
+.admin-table td:nth-child(2),
+.admin-table th:nth-child(3), /* Artist */
+.admin-table td:nth-child(3) {
+  width: 180px;
+  max-width: 180px;
+}
+
+/* If you want multi-line truncation (e.g., allow up to 2 lines),
+   you can add a specific class and use -webkit-line-clamp as in product.css.
+   For table rows we use single-line ellipsis to maintain row height. */
 
 /* Status and Role Badges */
 .status-badge,
