@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import type { User } from "../../types/User.ts";
+import type { User } from "../../types/User";
 
 interface UserFormProps {
   initialData?: User;
@@ -59,7 +59,7 @@ export const UserForm: React.FC<UserFormProps> = ({ initialData, onSubmit, onCan
 
     if (!isEditing) {
       // Clear form fields only when adding a new user
-      setName('');
+      setUsername('');
       setEmail('');
       setPassword('');
       setRole('customer');

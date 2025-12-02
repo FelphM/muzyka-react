@@ -27,7 +27,7 @@ export function getUsers(): User[] {
 }
 
 export function addProduct(newProduct: Omit<Product, "id" | "slug">): Product {
-  const id = Date.now().toString();
+  const id = Date.now();
   const slug = generateSlug(newProduct.name);
   const product: Product = { ...newProduct, id, slug };
   ProductTable.push(product);
@@ -35,7 +35,7 @@ export function addProduct(newProduct: Omit<Product, "id" | "slug">): Product {
 }
 
 export function addCategory(newCategory: Omit<Category, "id" | "productsCount" | "slug">): Category {
-  const id = Date.now().toString();
+  const id = Date.now();
   const slug = generateSlug(newCategory.name);
   const category: Category = { ...newCategory, id, productsCount: 0, slug };
   CategoryTable.push(category);
@@ -43,7 +43,7 @@ export function addCategory(newCategory: Omit<Category, "id" | "productsCount" |
 }
 
 export function addUser(newUser: Omit<User, "id" | "joinDate" | "lastLogin">): User {
-  const id = Date.now().toString();
+  const id = Date.now();
   const date = new Date().toISOString();
   const user: User = { ...newUser, id, joinDate: date, lastLogin: date };
   UserTable.push(user);
@@ -59,12 +59,10 @@ export function updateProduct(updatedProduct: Product): Product | undefined {
   return undefined;
 }
 
-export function deleteProduct(productId: string): boolean {
+export function deleteProduct(productId: number): boolean {
   const initialLength = ProductTable.length;
-  ProductTable.splice(
-    ProductTable.findIndex((p) => p.id === productId),
-    1
-  );
+  const idx = ProductTable.findIndex((p) => p.id === productId);
+  if (idx !== -1) ProductTable.splice(idx, 1);
   return ProductTable.length < initialLength;
 }
 
@@ -77,12 +75,10 @@ export function updateCategory(updatedCategory: Category): Category | undefined 
   return undefined;
 }
 
-export function deleteCategory(categoryId: string): boolean {
+export function deleteCategory(categoryId: number): boolean {
   const initialLength = CategoryTable.length;
-  CategoryTable.splice(
-    CategoryTable.findIndex((c) => c.id === categoryId),
-    1
-  );
+  const idx = CategoryTable.findIndex((c) => c.id === categoryId);
+  if (idx !== -1) CategoryTable.splice(idx, 1);
   return CategoryTable.length < initialLength;
 }
 
@@ -95,18 +91,16 @@ export function updateUser(updatedUser: User): User | undefined {
   return undefined;
 }
 
-export function deleteUser(userId: string): boolean {
+export function deleteUser(userId: number): boolean {
   const initialLength = UserTable.length;
-  UserTable.splice(
-    UserTable.findIndex((u) => u.id === userId),
-    1
-  );
+  const idx = UserTable.findIndex((u) => u.id === userId);
+  if (idx !== -1) UserTable.splice(idx, 1);
   return UserTable.length < initialLength;
 }
 
 export const ProductTable: Product[] = [
   {
-    id: "1",
+    id: 1,
     artist: "Queen",
     name: "Live At The Rainbow 1974",
     description:
@@ -115,13 +109,13 @@ export const ProductTable: Product[] = [
     price: 13,
     format: "Compact Disc",
     slug: "queen-rainbow",
-    image: {
-      src: "https://cdnx.jumpseller.com/allthetracks/image/47200543/R-29674024-1706887378-1832.jpg?1711980245",
-      alt: "Queen Live At The Rainbow 1974 Cover",
-    },
+    imageUrl: "https://cdnx.jumpseller.com/allthetracks/image/47200543/R-29674024-1706887378-1832.jpg?1711980245",
+    imageAlt: "Queen Live At The Rainbow 1974 Cover",
+    category: { id: 1, name: 'Rock', description: 'Classic Rock' },
+    stock: 10,
   },
   {
-    id: "2",
+    id: 2,
     artist: "Pink Floyd",
     name: "The Dark Side Of The Moon",
     description:
@@ -130,13 +124,13 @@ export const ProductTable: Product[] = [
     price: 35, // Precio estimado para reedición o copia común
     format: "Long Play",
     slug: "pink-floyd-dark-side-moon",
-    image: {
-      src: "https://i.discogs.com/1fwskTLM6cfxbdNmBDJ8expl6wab0tEgxvuloLIqKh8/rs:fit/g:sm/q:90/h:596/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTkyODc4/MDktMTQ3OTc1MzIz/Ni05NjE3LmpwZWc.jpeg",
-      alt: "Pink Floyd The Dark Side Of The Moon Cover",
-    },
+    imageUrl: "https://i.discogs.com/1fwskTLM6cfxbdNmBDJ8expl6wab0tEgxvuloLIqKh8/rs:fit/g:sm/q:90/h:596/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTkyODc4/MDktMTQ3OTc1MzIz/Ni05NjE3LmpwZWc.jpeg",
+    imageAlt: "Pink Floyd The Dark Side Of The Moon Cover",
+    category: { id: 1, name: 'Rock', description: 'Classic Rock' },
+    stock: 8,
   },
   {
-    id: "3",
+    id: 3,
     artist: "Bruce Springsteen",
     name: "Nebraska",
     description:
@@ -145,13 +139,13 @@ export const ProductTable: Product[] = [
     price: 20,
     format: "Long Play",
     slug: "bruce-springsteen-nebraska",
-    image: {
-      src: "https://i.discogs.com/2celtLBBPnII5ct1quV65j6_a2zv2xBKNqiYpN8wJRA/rs:fit/g:sm/q:90/h:591/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE3NDk0/My0xMTg3OTg1NjUz/LmpwZWc.jpeg",
-      alt: "Bruce Springsteen Nebraska Cover",
-    },
+    imageUrl: "https://i.discogs.com/2celtLBBPnII5ct1quV65j6_a2zv2xBKNqiYpN8wJRA/rs:fit/g:sm/q:90/h:591/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTE3NDk0/My0xMTg3OTg1NjUz/LmpwZWc.jpeg",
+    imageAlt: "Bruce Springsteen Nebraska Cover",
+    category: { id: 1, name: 'Rock', description: 'Classic Rock' },
+    stock: 5,
   },
   {
-    id: "4",
+    id: 4,
     artist: "Tracy Chapman",
     name: "Tracy Chapman",
     description:
@@ -160,13 +154,13 @@ export const ProductTable: Product[] = [
     price: 15,
     format: "Long Play",
     slug: "tracy-chapman-debut",
-    image: {
-      src: "https://i.discogs.com/urTNMzDHPA7NUlCqf4SDrEYhfTFOwFV9nlAU0-dxJ2U/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEzODYy/OC0xMzY4MjE3MDg0/LTU4NjQuanBlZw.jpeg",
-      alt: "Tracy Chapman Tracy Chapman Cover",
-    },
+    imageUrl: "https://i.discogs.com/urTNMzDHPA7NUlCqf4SDrEYhfTFOwFV9nlAU0-dxJ2U/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEzODYy/OC0xMzY4MjE3MDg0/LTU4NjQuanBlZw.jpeg",
+    imageAlt: "Tracy Chapman Tracy Chapman Cover",
+    category: { id: 1, name: 'Rock', description: 'Classic Rock' },
+    stock: 12,
   },
   {
-    id: "5",
+    id: 5,
     artist: "The Velvet Underground & Nico",
     name: "The Velvet Underground & Nico",
     description:
@@ -175,10 +169,10 @@ export const ProductTable: Product[] = [
     price: 30,
     format: "Long Play",
     slug: "velvet-underground-nico",
-    image: {
-      src: "https://i.discogs.com/Yh1cs99h4P29lRCaXXfbWb7APlDM9ODuwphDfby_2T8/rs:fit/g:sm/q:90/h:587/w:600/czM6Ly9kaXNjb2dz/LWRhdGAbYXNlLWlt/YWdlcy9SLTUwMzQw/NDUtMTQ1NDU5Mzc2/OC04ODU2LmpwZWc.jpeg",
-      alt: "The Velvet Underground & Nico Cover",
-    },
+    imageUrl: "https://i.discogs.com/Yh1cs99h4P29lRCaXXfbWb7APlDM9ODuwphDfby_2T8/rs:fit/g:sm/q:90/h:587/w:600/czM6Ly9kaXNjb2dz/LWRhdGAbYXNlLWlt/YWdlcy9SLTUwMzQw/NDUtMTQ1NDU5Mzc2/OC04ODU2LmpwZWc.jpeg",
+    imageAlt: "The Velvet Underground & Nico Cover",
+    category: { id: 1, name: 'Rock', description: 'Classic Rock' },
+    stock: 7,
   },
 ];
 
@@ -311,28 +305,28 @@ export const PostTable: Post[] = [
 
 export const CategoryTable: Category[] = [
   {
-    id: "1",
+    id: 1,
     name: "Rock",
     description: "Classic Rock, Alternative Rock, Hard Rock, etc.",
     productsCount: 3,
     slug: "rock",
   },
   {
-    id: "2",
+    id: 2,
     name: "Pop",
     description: "Pop, Synth-Pop, Dance-Pop, etc.",
     productsCount: 1,
     slug: "pop",
   },
   {
-    id: "3",
+    id: 3,
     name: "Hip Hop",
     description: "Hip Hop, Rap, Trap, etc.",
     productsCount: 1,
     slug: "hip-hop",
   },
   {
-    id: "4",
+    id: 4,
     name: "Electronic",
     description: "Electronic, House, Techno, Ambient, etc.",
     productsCount: 0,
@@ -342,8 +336,8 @@ export const CategoryTable: Category[] = [
 
 export const UserTable: User[] = [
   {
-    id: "1",
-    name: "Admin User",
+    id: 1,
+    username: "Admin User",
     email: "admin@example.com",
     role: "admin",
     status: "active",
@@ -351,8 +345,8 @@ export const UserTable: User[] = [
     lastLogin: "2023-11-20T15:30:00Z",
   },
   {
-    id: "2",
-    name: "John Doe",
+    id: 2,
+    username: "John Doe",
     email: "john.doe@example.com",
     role: "customer",
     status: "active",
@@ -360,8 +354,8 @@ export const UserTable: User[] = [
     lastLogin: "2023-11-19T14:00:00Z",
   },
   {
-    id: "3",
-    name: "Jane Smith",
+    id: 3,
+    username: "Jane Smith",
     email: "jane.smith@example.com",
     role: "customer",
     status: "inactive",
