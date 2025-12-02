@@ -41,12 +41,6 @@ export function SideBar() {
             Sales Reports
           </Link>
         </li>
-        <li>
-          <Link to="/admin/profile">
-            <i className="fas fa-user-cog"></i>
-            Admin Profile
-          </Link>
-        </li>
         <li className="sidebar-divider"></li>
         <li>
           <Link to="/" className="exit-link">

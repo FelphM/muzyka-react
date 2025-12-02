@@ -30,7 +30,6 @@ import { ProductsPage as AdminProducts } from './pages/admin/Products';
 import { UsersPage as AdminUsers } from './pages/admin/Users';
 import { CategoriesPage as AdminCategories } from './pages/admin/Categories';
 import { ReportsPage as AdminReports } from './pages/admin/Reports';
-import { AdminProfilePage as AdminProfile } from './pages/admin/Profile';
 
 
 import './styles/global.css';
@@ -66,7 +65,6 @@ function App() {
               <Route path="users" element={<AdminUsers />} />
               <Route path="categories" element={<AdminCategories />} />
               <Route path="reports" element={<AdminReports />} />
-              <Route path="profile" element={<AdminProfile />} />
             </Route>
 
             <Route path="*" element={<NotFound />} />

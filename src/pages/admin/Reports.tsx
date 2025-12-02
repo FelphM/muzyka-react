@@ -83,6 +83,40 @@ export function ReportsPage() {
     fetchOrdersAndCalculateReports();
   }, []);
 
+  const handleExportReport = () => {
+    // Prepare CSV content
+    let csvContent = 'data:text/csv;charset=utf-8,';
+    
+    // Add Sales Overview section
+    csvContent += 'SALES OVERVIEW\n';
+    csvContent += 'Period,Revenue,Orders,Average Order Value\n';
+    
+    salesData.forEach(data => {
+      csvContent += `"${data.period}",${data.revenue.toFixed(2)},${data.orders},${data.averageOrder.toFixed(2)}\n`;
+    });
+    
+    // Add empty line and Top Products section
+    csvContent += '\n\nTOP SELLING PRODUCTS\n';
+    csvContent += 'Product,Units Sold,Revenue\n';
+    
+    topProducts.forEach(product => {
+      csvContent += `"${product.name}",${product.sales},${product.revenue.toFixed(2)}\n`;
+    });
+    
+    // Create download link
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `sales-report-${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    
+    // Trigger download
+    link.click();
+    
+    // Clean up
+    document.body.removeChild(link);
+  };
+
   return (
     <>
           <div className="admin-header">
@@ -98,7 +132,7 @@ export function ReportsPage() {
                 <option value="quarter">Last Quarter</option>
                 <option value="year">Last Year</option>
               </select>
-              <button className="primary-button">
+              <button className="primary-button" onClick={handleExportReport}>
                 <i className="fas fa-download"></i> Export Report
               </button>
             </div>
