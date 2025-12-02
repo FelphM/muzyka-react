@@ -87,3 +87,7 @@ input:disabled {
 .quantityButton:hover {
   background-color: #e0e0e0;
 }
+
+main {
+  min-height: 600px;
+}
