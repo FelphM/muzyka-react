@@ -47,6 +47,11 @@ export function ProductDetails() {
             <p className="format">{product.format}</p>
             <p className="stock">Stock: {product.stock > 0 ? product.stock : 'Out of Stock'}</p>
           </div>
+          <div className="productDetailsMeta">
+            <p><strong>Category:</strong> {product.category.name}</p>
+            <p><strong>Artist:</strong> {product.artist}</p>
+            <p><strong>Format:</strong> {product.format}</p>
+          </div>
           <p className="description">{product.description}</p>
 
           <button 
