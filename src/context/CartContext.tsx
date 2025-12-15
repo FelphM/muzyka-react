@@ -69,11 +69,22 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     if (quantity <= 0) {
       removeFromCart(productId);
     } else {
-      setCart(prevCart =>
-        prevCart.map(item =>
+      setCart(prevCart => {
+        const itemToUpdate = prevCart.find(item => item.id === productId);
+
+        if (itemToUpdate && quantity > itemToUpdate.stock) {
+          alert(`You cannot set quantity for ${itemToUpdate.name} higher than the stock limit (${itemToUpdate.stock}).`);
+          // Cap the quantity at the max stock
+          return prevCart.map(item =>
+            item.id === productId ? { ...item, quantity: itemToUpdate.stock } : item
+          );
+        }
+
+        // Otherwise, update as normal
+        return prevCart.map(item =>
           item.id === productId ? { ...item, quantity } : item
-        )
-      );
+        );
+      });
       // TODO: Call backend to update quantity.
       // Example: api.put('/cart/update', { productId, quantity });
     }
