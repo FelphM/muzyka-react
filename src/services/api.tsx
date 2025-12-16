@@ -1,19 +1,9 @@
 import type { User } from '../types/User'; // Import User type
-
-const API_BASE_URL = "https://muzyka-backend.onrender.com/api/v1";
+import { API_BASE_URL, getAuthHeader } from './apiUtils';
 
 interface JwtResponse {
   token: string;
   user: User;
-}
-
-// Helper to get authorization header
-function getAuthHeader(): HeadersInit {
-  const token = localStorage.getItem('token');
-  if (token) {
-    return { 'Authorization': `Bearer ${token}` };
-  }
-  return {};
 }
 
 // --- Product API Calls ---
