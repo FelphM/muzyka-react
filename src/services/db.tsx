@@ -179,127 +179,47 @@ export const ProductTable: Product[] = [
 export const PostTable: Post[] = [
   {
     id: "mcr-comeback-2025",
-    banner: {
-      src: "https://eulaliemagazine.com/wp-content/uploads/2025/09/6D6F5AE8-D0A3-40EF-9294-8700CFFFA0A8.jpg",
-      alt: "MCR Long Live To The Black Parade Tour Offical Photography",
-    },
-    card: {
-      title: "MCR Comeback to the stages",
-      author: "Alice",
-      date: new Date("2025-07-09"),
-      brief:
-        "After three years away from the stages, Gerard and the rest of the band are back with The Black Parade Tour.",
-    },
-    post: {
-      title: "MCR Comeback to the stages",
-      content: [
-        <p key="p1">
-          After three years out of the stages, Gerard and the rest of the band
-          have finally returned to give us the new The Black Parade Tour. Fans
-          can expect classic hits alongside refreshed arrangements and a
-          celebratory atmosphere as the band reconnects with audiences
-          worldwide.
-        </p>,
-        <h3 key="h3-1">Tour Dates and Details</h3>,
-        <ul key="ul-1">
-          <li>Venue 1: Tokyo Dome - Sept 15</li>
-          <li>Venue 2: London Stadium - Oct 1</li>
-          <li>Venue 3: L.A. Forum - Nov 10</li>
-        </ul>,
-        <p key="p2">
-          The band promises a fully immersive visual experience reminiscent of
-          the original Black Parade era, with new costumes and stage production.
-        </p>,
-      ],
-    },
+    bannerSrc: "https://eulaliemagazine.com/wp-content/uploads/2025/09/6D6F5AE8-D0A3-40EF-9294-8700CFFFA0A8.jpg",
+    bannerAlt: "MCR Long Live To The Black Parade Tour Offical Photography",
+    cardTitle: "MCR Comeback to the stages",
+    cardAuthor: "Alice",
+    cardDate: "2025-07-09",
+    cardBrief: "After three years away from the stages, Gerard and the rest of the band are back with The Black Parade Tour.",
+    postTitle: "MCR Comeback to the stages",
+    postContent: "After three years out of the stages, Gerard and the rest of the band have finally returned to give us the new The Black Parade Tour. Fans can expect classic hits alongside refreshed arrangements and a celebratory atmosphere as the band reconnects with audiences worldwide.\n\n### Tour Dates and Details\n\n- Venue 1: Tokyo Dome - Sept 15\n- Venue 2: London Stadium - Oct 1\n- Venue 3: L.A. Forum - Nov 10\n\nThe band promises a fully immersive visual experience reminiscent of the original Black Parade era, with new costumes and stage production."
   },
   {
     id: "taylor-swift-vinyl-record",
-    banner: {
-      src: "https://thedarkslide.com/cdn/shop/files/c0033546-_34421.jpg?v=1733299003",
-      alt: "Close-up of Taylor Swift's Eras Tour vinyl record",
-    },
-    card: {
-      title: "Taylor Swift Breaks Vinyl Sales Record",
-      author: "Robert B.",
-      date: new Date("2025-10-15"),
-      brief:
-        "Taylor Swift's latest album has officially broken the modern-day record for the most vinyl units sold in a single week in the US.",
-    },
-    post: {
-      title: "The Swift Effect: Album Smashes Vinyl Sales Records",
-      content: [
-        <p key="p1">
-          The singer-songwriter has once again demonstrated her massive commercial
-          appeal, with her tenth studio album setting an all-time high for vinyl sales. 
-          **Over 650,000 copies** of the album were sold in its debut week across various color variants and exclusive retailer editions.
-        </p>,
-        <p key="p2">
-          This surge reflects a broader trend of vinyl revitalization, where pop
-          artists are now driving the market that was once dominated by classic
-          rock and indie bands. The success is attributed to extensive marketing and the **collectibility** of her physical media.
-        </p>,
-      ],
-    },
+    bannerSrc: "https://thedarkslide.com/cdn/shop/files/c0033546-_34421.jpg?v=1733299003",
+    bannerAlt: "Close-up of Taylor Swift's Eras Tour vinyl record",
+    cardTitle: "Taylor Swift Breaks Vinyl Sales Record",
+    cardAuthor: "Robert B.",
+    cardDate: "2025-10-15",
+    cardBrief: "Taylor Swift's latest album has officially broken the modern-day record for the most vinyl units sold in a single week in the US.",
+    postTitle: "The Swift Effect: Album Smashes Vinyl Sales Records",
+    postContent: "The singer-songwriter has once again demonstrated her massive commercial appeal, with her tenth studio album setting an all-time high for vinyl sales. **Over 650,000 copies** of the album were sold in its debut week across various color variants and exclusive retailer editions.\n\nThis surge reflects a broader trend of vinyl revitalization, where pop artists are now driving the market that was once dominated by classic rock and indie bands. The success is attributed to extensive marketing and the **collectibility** of her physical media."
   },
   {
     id: "radiohead-new-album-speculation",
-    banner: {
-      src: "https://imagenes.elpais.com/resizer/v2/53BVJ5SD7P3BOLTKLHMFXZQXVA.jpg?auth=4bed59e2418537cecfb8b9873b028c0477750a12e36926f64f911ad400a46f2b&width=414",
-      alt: "RadioHead Band Photo",
-    },
-    card: {
-      title: "Is Radiohead Releasing New Material?",
-      author: "Jane D.",
-      date: new Date("2025-10-20"),
-      brief:
-        "After a long hiatus, cryptic social media activity hints at a potential new Radiohead album or a special 20th-anniversary reissue.",
-    },
-    post: {
-      title: "Cryptic Clues: The Wait for a New Radiohead LP",
-      content: [
-        <p key="p1">
-          Fans have been dissecting recent changes to the band’s official website
-          and social media accounts, which went dark before resurfacing with subtle, abstract images.
-          This pattern mirrors previous album rollouts, suggesting that new material is imminent.
-        </p>,
-        <h4 key="h4-1">Anniversary Reissue or Brand New Album?</h4>,
-        <p key="p2">
-          While some speculate a new album, others believe the activity is related
-          to a 20th-anniversary release of *Hail to the Thief*, possibly including
-          previously unreleased B-sides and demos. **Official confirmation is expected next month.**
-        </p>,
-      ],
-    },
+    bannerSrc: "https://imagenes.elpais.com/resizer/v2/53BVJ5SD7P3BOLTKLHMFXZQXVA.jpg?auth=4bed59e2418537cecfb8b9873b028c0477750a12e36926f64f911ad400a46f2b&width=414",
+    bannerAlt: "RadioHead Band Photo",
+    cardTitle: "Is Radiohead Releasing New Material?",
+    cardAuthor: "Jane D.",
+    cardDate: "2025-10-20",
+    cardBrief: "After a long hiatus, cryptic social media activity hints at a potential new Radiohead album or a special 20th-anniversary reissue.",
+    postTitle: "Cryptic Clues: The Wait for a New Radiohead LP",
+    postContent: "Fans have been dissecting recent changes to the band’s official website and social media accounts, which went dark before resurfacing with subtle, abstract images. This pattern mirrors previous album rollouts, suggesting that new material is imminent.\n\n#### Anniversary Reissue or Brand New Album?\n\nWhile some speculate a new album, others believe the activity is related to a 20th-anniversary release of *Hail to the Thief*, possibly including previously unreleased B-sides and demos. **Official confirmation is expected next month.**"
   },
   {
     id: "kendrick-lamar-festival-headliner",
-    banner: {
-      src: "https://www.bendigoadvertiser.com.au/images/transform/v1/crop/frm/silverstone-feed-data/94aeb0db-4d3a-44d9-99f2-64aad55dca90.png/r0_0_3040_2026_w1200_h678_fmax.jpg",
-      alt: "Kendrick Lamar performing on a dark stage",
-    },
-    card: {
-      title: "Kendrick Lamar Confirmed to Headline Major Music Festivals",
-      author: "Michael W.",
-      date: new Date("2025-10-25"),
-      brief:
-        "The celebrated rapper is set to be the main act for three major European and North American music festivals in the 2026 season.",
-    },
-    post: {
-      title: "King Kenny Reigns: The 2026 Festival Season Lineup",
-      content: [
-        <p key="p1">
-          Kendrick Lamar, fresh off his latest Grammy wins, has been officially announced
-          as the headlining artist for three of the world's most prominent music festivals:
-          **Glastonbury, Primavera Sound, and Coachella**.
-        </p>,
-        <p key="p2">
-          Tickets for all three events saw an immediate surge in demand following
-          the announcement, proving the rapper's status as one of the most bankable
-          live acts in modern music. Expect his sets to heavily feature tracks from his latest complex work.
-        </p>,
-      ],
-    },
+    bannerSrc: "https://www.bendigoadvertiser.com.au/images/transform/v1/crop/frm/silverstone-feed-data/94aeb0db-4d3a-44d9-99f2-64aad55dca90.png/r0_0_3040_2026_w1200_h678_fmax.jpg",
+    bannerAlt: "Kendrick Lamar performing on a dark stage",
+    cardTitle: "Kendrick Lamar Confirmed to Headline Major Music Festivals",
+    cardAuthor: "Michael W.",
+    cardDate: "2025-10-25",
+    cardBrief: "The celebrated rapper is set to be the main act for three major European and North American music festivals in the 2026 season.",
+    postTitle: "King Kenny Reigns: The 2026 Festival Season Lineup",
+    postContent: "Kendrick Lamar, fresh off his latest Grammy wins, has been officially announced as the headlining artist for three of the world's most prominent music festivals: **Glastonbury, Primavera Sound, and Coachella**.\n\nTickets for all three events saw an immediate surge in demand following the announcement, proving the rapper's status as one of the most bankable live acts in modern music. Expect his sets to heavily feature tracks from his latest complex work."
   },
 ];
 
