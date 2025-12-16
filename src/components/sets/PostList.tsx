@@ -21,31 +21,22 @@ export function PostList({ searchTerm, onEdit, onDelete, posts }: PostListProps)
         if (searchTerm.trim() === '') {
             setFilteredPosts(posts);
         } else {
+            const lowercasedFilter = searchTerm.toLowerCase();
             const filtered = posts.filter(post =>
-                post.card.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                post.card.brief.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                post.card.author.toLowerCase().includes(searchTerm.toLowerCase())
+                post.cardTitle.toLowerCase().includes(lowercasedFilter) ||
+                (post.cardBrief && post.cardBrief.toLowerCase().includes(lowercasedFilter)) ||
+                (post.cardAuthor && post.cardAuthor.toLowerCase().includes(lowercasedFilter))
             );
             setFilteredPosts(filtered);
         }
     }, [searchTerm, posts]);
-
-    // formatDate removed (not used)
 
     return (
         <section className="PostList fullContent">
             {filteredPosts.length > 0 ? (
                 filteredPosts.map((post: Post) => (
                     <div key={post.id} className="post-item-wrapper">
-                        <PostCard
-                            post={{
-                                ...post,
-                                card: {
-                                    ...post.card,
-                                    date: new Date(post.card.date), // Ensure date is a Date object
-                                },
-                            }}
-                        />
+                        <PostCard post={post} />
                         {isAdmin && (
                             <div className="admin-actions">
                                 <button onClick={(e) => { e.stopPropagation(); onEdit(post); }} className="edit-button">Edit</button>

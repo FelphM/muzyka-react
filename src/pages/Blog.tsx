@@ -24,15 +24,7 @@ export function BlogPage() {
     setError(null);
     try {
       const fetchedPosts = await getAllBlogPosts();
-      // Ensure date objects are correctly parsed if coming as strings from API
-      const parsedPosts = fetchedPosts.map(post => ({
-        ...post,
-        card: {
-          ...post.card,
-          date: new Date(post.card.date)
-        }
-      }));
-      setPosts(parsedPosts);
+      setPosts(fetchedPosts);
     } catch (err) {
       console.error("Failed to fetch posts:", err);
       setError("Failed to load blog posts.");
@@ -68,7 +60,7 @@ export function BlogPage() {
     }
   };
 
-  const handleSubmitForm = async (postData: Omit<Post, 'id' | 'cardDate'>, postId?: string) => {
+  const handleSubmitForm = async (postData: Omit<Post, 'id'>, postId?: string) => {
     try {
       if (postId) {
         await updateBlogPost(postId, postData);

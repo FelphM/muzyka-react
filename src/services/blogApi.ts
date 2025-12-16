@@ -20,7 +20,7 @@ export const getBlogPostById = async (id: string): Promise<Post | null> => {
   return await response.json();
 };
 
-export const createBlogPost = async (newPost: Omit<Post, 'id' | 'cardDate'>): Promise<Post> => {
+export const createBlogPost = async (newPost: Omit<Post, 'id'>): Promise<Post> => {
   const response = await fetch(`${API_BASE_URL}/blogposts`, {
     method: 'POST',
     headers: {

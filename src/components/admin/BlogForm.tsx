@@ -1,49 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import type { Post } from '../../types/BlogPost'; // Assuming BlogPost is exported as Post type
+import type { Post } from '../../types/BlogPost';
 
 interface BlogFormProps {
   initialPost?: Post; // Optional: for editing an existing post
-  onSubmit: (post: Omit<Post, 'id' | 'cardDate'>, postId?: string) => void;
+  onSubmit: (post: Omit<Post, 'id'>, postId?: string) => void;
   onCancel: () => void;
 }
 
 const BlogForm: React.FC<BlogFormProps> = ({ initialPost, onSubmit, onCancel }) => {
-  const [bannerSrc, setBannerSrc] = useState(initialPost?.banner.src || '');
-  const [bannerAlt, setBannerAlt] = useState(initialPost?.banner.alt || '');
-  const [cardTitle, setCardTitle] = useState(initialPost?.card.title || '');
-  const [cardAuthor, setCardAuthor] = useState(initialPost?.card.author || '');
-  const [cardBrief, setCardBrief] = useState(initialPost?.card.brief || '');
-  const [postTitle, setPostTitle] = useState(initialPost?.post.title || '');
-  const [postContent, setPostContent] = useState(
-    initialPost?.post.content ? (initialPost.post.content as string[]).join('\n\n') : ''
-  ); // Assuming content is string[] and we join for textarea
+  // State for the new flat structure
+  const [bannerSrc, setBannerSrc] = useState('');
+  const [bannerAlt, setBannerAlt] = useState('');
+  const [cardTitle, setCardTitle] = useState('');
+  const [cardAuthor, setCardAuthor] = useState('');
+  const [cardBrief, setCardBrief] = useState('');
+  const [postTitle, setPostTitle] = useState('');
+  const [postContent, setPostContent] = useState('');
 
   useEffect(() => {
     if (initialPost) {
-      setBannerSrc(initialPost.banner.src);
-      setBannerAlt(initialPost.banner.alt);
-      setCardTitle(initialPost.card.title);
-      setCardAuthor(initialPost.card.author);
-      setCardBrief(initialPost.card.brief);
-      setPostTitle(initialPost.post.title);
-      setPostContent((initialPost.post.content as string[]).join('\n\n'));
+      setBannerSrc(initialPost.bannerSrc || '');
+      setBannerAlt(initialPost.bannerAlt || '');
+      setCardTitle(initialPost.cardTitle || '');
+      setCardAuthor(initialPost.cardAuthor || '');
+      setCardBrief(initialPost.cardBrief || '');
+      setPostTitle(initialPost.postTitle || '');
+      setPostContent(initialPost.postContent || '');
     }
   }, [initialPost]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const newPost: Omit<Post, 'id' | 'cardDate'> = {
-      banner: { src: bannerSrc, alt: bannerAlt },
-      card: {
-        title: cardTitle,
-        author: cardAuthor,
-          date: new Date(), // set current date when creating/editing from the form
-        brief: cardBrief,
-      },
-      post: {
-        title: postTitle,
-        content: postContent.split('\n\n') as React.ReactNode[], // Convert back to string[] for now
-      },
+    // Create the flat post object for submission
+    const newPost: Omit<Post, 'id'> = {
+      bannerSrc,
+      bannerAlt,
+      cardTitle,
+      cardAuthor,
+      cardBrief,
+      postTitle,
+      postContent,
+      cardDate: new Date().toISOString().split('T')[0], // Add current date in YYYY-MM-DD format
     };
     onSubmit(newPost, initialPost?.id);
   };

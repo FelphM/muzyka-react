@@ -1,17 +1,11 @@
 export type Post = {
   id: string;
-  banner: {
-    src: string,
-    alt: string,
-  },
-  card: {
-    title: string;
-    author: string;
-    date: Date;
-    brief: string;
-  };
-  post: {
-    title: string;
-    content: React.ReactNode[];
-  };
+  bannerSrc?: string;
+  bannerAlt?: string;
+  cardTitle: string;
+  cardAuthor?: string;
+  cardDate: string; // Using string for date to simplify serialization
+  cardBrief?: string;
+  postTitle: string;
+  postContent?: string;
 };
