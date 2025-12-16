@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "../styles/forms.css";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { updateUserProfile } from "../services/api";
+import { updateUserProfile, deleteUserProfile } from "../services/api";
 
 
 export function Profile() {
