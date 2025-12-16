@@ -90,6 +90,20 @@ export function Profile() {
     navigate("/change-password");
   };
 
+  const handleDeleteAccount = async (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+    if (window.confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+      try {
+        await deleteUserProfile();
+        logout();
+        navigate("/");
+      } catch (error) {
+        console.error("Failed to delete account:", error);
+        // Optionally, show an error message to the user
+      }
+    }
+  };
+
   return (
     <>
       <main className="centerContent">
@@ -118,7 +132,7 @@ export function Profile() {
                 placeholder="alice@gmail.com"
                 value={userData.email}
                 onChange={handleChange}
-                disabled={!isEditing}
+                disabled={true}
               />
             </label>
 
@@ -223,7 +237,7 @@ export function Profile() {
             </button>
           </form>
           <br />
-          <button className="secondaryButton">Delete Account</button>
+          <button onClick={handleDeleteAccount} className="secondaryButton">Delete Account</button>
         </section>
       </main>
     </>

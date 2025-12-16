@@ -216,6 +216,19 @@ export async function updateUserProfile(userData: any) {
   return await response.json();
 }
 
+export async function deleteUserProfile(): Promise<number> {
+  const response = await fetch(`${API_BASE_URL}/users/profile`, {
+    method: "DELETE",
+    headers: {
+      ...getAuthHeader(),
+    },
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return response.status;
+}
+
 export async function deleteUser(id: number) {
   const response = await fetch(`${API_BASE_URL}/users/${id}`, {
     method: "DELETE",
