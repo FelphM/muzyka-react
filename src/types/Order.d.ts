@@ -10,7 +10,7 @@ export interface OrderItem {
 export interface PurchaseOrder {
   id: number;
   userName: string;
-  orderDate: string; // ISO date string
+  orderDate: string; 
   totalPrice: number;
   status: 'PENDING' | 'COMPLETED' | 'CANCELLED';
   items: OrderItem[];

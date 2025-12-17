@@ -33,17 +33,17 @@
 .quantity-controls {
   display: flex;
   align-items: center;
-  gap: 0.5rem; /* Space between buttons and quantity */
+  gap: 0.5rem; 
   margin-top: 0.5rem;
 }
 
 .quantity-controls span {
-  min-width: 30px; /* Ensure space for quantity text */
+  min-width: 30px; 
   text-align: center;
 }
 
 .cart-item-details .secondaryButton {
-  margin-top: 0.5rem; /* Adjust this value as needed */
+  margin-top: 0.5rem; 
 }
 
 .cart-total {

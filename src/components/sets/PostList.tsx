@@ -2,21 +2,21 @@ import { useEffect, useState } from "react";
 import type { Post } from "../../types/BlogPost";
 import { PostCard } from "../PostCard";
 import "../../styles/blog.css";
-import { useAuth } from '../../context/AuthContext'; // Import useAuth
+import { useAuth } from '../../context/AuthContext'; 
 
 interface PostListProps {
     searchTerm: string;
     onEdit: (post: Post) => void;
     onDelete: (postId: string) => void;
-    posts: Post[]; // Receive posts as a prop from parent Blog page
+    posts: Post[]; 
 }
 
 export function PostList({ searchTerm, onEdit, onDelete, posts }: PostListProps) {
     const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
-    const { user } = useAuth(); // Get user from AuthContext
+    const { user } = useAuth(); 
     const isAdmin = user?.role === 'admin';
 
-    // This useEffect now just filters posts received as props
+    
     useEffect(() => {
         if (searchTerm.trim() === '') {
             setFilteredPosts(posts);

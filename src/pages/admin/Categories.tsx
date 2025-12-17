@@ -31,13 +31,13 @@ export function CategoriesPage() {
   const handleSubmitCategory = async (categoryData: Category) => {
     try {
       if (editingCategory) {
-        // Update existing category
+        // Actualizar categoria existente
         const updated = await updateCategory(editingCategory.id as number, categoryData);
         setCategories((prevCategories) =>
           prevCategories.map((c) => (c.id === updated.id ? updated : c))
         );
       } else {
-        // Add new category
+        // Añadir nueva categoria
         const newlyAddedCategory = await createCategory(categoryData);
         setCategories((prevCategories) => [...prevCategories, newlyAddedCategory]);
       }

@@ -47,8 +47,6 @@ export function Profile() {
       try {
         console.log("Saving user data:", userData);
         const updatedUser = await updateUserProfile(userData);
-        //-TODO: research a better way to update the context
-        // temporary solution to update the user in the context
         if (user) {
           const newUserData = { ...user, ...updatedUser };
           localStorage.setItem('user', JSON.stringify(newUserData));
@@ -56,7 +54,6 @@ export function Profile() {
         }
       } catch (error) {
         console.error("Failed to update user profile:", error);
-        // Optionally, show an error message to the user
       }
     }
     setIsEditing(!isEditing);
@@ -64,7 +61,6 @@ export function Profile() {
 
   const handleCancel = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    // Reset to the user data from context
     if (user) {
       setUserData({
         username: user.username || "",
@@ -99,7 +95,6 @@ export function Profile() {
         navigate("/");
       } catch (error) {
         console.error("Failed to delete account:", error);
-        // Optionally, show an error message to the user
       }
     }
   };
@@ -184,7 +179,6 @@ export function Profile() {
               />
             </label>
 
-            {/* New Fields */}
             <label>
               City
               <input
@@ -224,11 +218,10 @@ export function Profile() {
               />
             </label>
 
-            {/* Reuse Edit/Save/Cancel logic here if needed, or rely on the main section's controls */}
           </form>
         </section>
         
-        {/* === 4. Account Actions Section (Log Out) === */}
+        {/* === 4. Sección Acciones de Cuenta (Log Out) === */}
         <section>
           <h2>⚙️ Account Actions</h2>
           <form onSubmit={handleLogout}>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { createUser } from "../services/api"; // Import createUser
+import { createUser } from "../services/api"; 
 
 export function SignUpForm() {
   const [username, setUsername] = useState("");
@@ -13,7 +13,7 @@ export function SignUpForm() {
     event.preventDefault();
 
     try {
-      // Call the createUser API function
+      // Llama a la función createUser de la API
       await createUser({ username, email, password, role: "CUSTOMER", status: "ACTIVE" });
 
       alert("Sign up successful! Please log in.");

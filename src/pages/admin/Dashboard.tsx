@@ -146,7 +146,6 @@ export function DashboardPage() {
             <Link to="/admin/users" className="view-more">View User Management →</Link>
           </section>
 
-          {/* Quick Actions */}
           <section className="dashboard-card quick-actions">
             <h2>Quick Actions</h2>
             <div className="actions-grid">

@@ -26,7 +26,7 @@
   margin-top: 1rem;
 }
 
-/* Common Admin Layout */
+/* Estilos para admin */
 .admin-container {
   display: flex;
   min-height: 100vh;
@@ -35,11 +35,10 @@
 
 .admin-content {
   flex: 1;
-  padding: 2rem; /* Reverted to original padding */
-  margin-left: 200px; /* Match sidebar width */
+  padding: 2rem; 
+  margin-left: 200px; 
 }
 
-/* Unified card styles (basadas en .dashboard-card de dashboard.css) */
 .admin-card {
   border: 2px solid rgba(0, 0, 0, 0.158);
   background: white;
@@ -65,7 +64,7 @@
   gap: 1rem;
 }
 
-/* Buttons */
+/* Botones */
 .primary-button {
   background-color: #4a90e2;
   color: white;
@@ -100,7 +99,7 @@
   background-color: #e9ecef;
 }
 
-/* Tables */
+/* Tablas */
 .table-container {
   background: white;
   overflow: auto;
@@ -109,9 +108,6 @@
 .admin-table {
   width: 100%;
   border-collapse: collapse;
-  /* Use fixed layout so very long words don't expand the table width
-     and cause the page to scroll horizontally. Columns will respect
-     specified widths and overflow will be clipped with ellipsis. */
   table-layout: fixed;
 }
 
@@ -120,9 +116,9 @@
   padding: 1rem;
   text-align: left;
   border-bottom: 1px solid #eee;
-  overflow: hidden; /* ensure cell content doesn't overflow */
+  overflow: hidden; 
   text-overflow: ellipsis;
-  white-space: nowrap; /* keep single-line truncation in table cells */
+  white-space: nowrap; 
 }
 
 .admin-table th {
@@ -134,20 +130,16 @@
   background-color: #f8f9fa;
 }
 
-/* Specific column width controls to keep layout stable. Adjust as needed. */
-.admin-table th:nth-child(2), /* Name */
+.admin-table th:nth-child(2), 
 .admin-table td:nth-child(2),
-.admin-table th:nth-child(3), /* Artist */
+.admin-table th:nth-child(3), 
 .admin-table td:nth-child(3) {
   width: 180px;
   max-width: 180px;
 }
 
-/* If you want multi-line truncation (e.g., allow up to 2 lines),
-   you can add a specific class and use -webkit-line-clamp as in product.css.
-   For table rows we use single-line ellipsis to maintain row height. */
 
-/* Status and Role Badges */
+
 .status-badge,
 .role-badge {
   padding: 0.25rem 0.75rem;
@@ -218,7 +210,7 @@
   opacity: 0.7;
 }
 
-/* Search Box */
+/* Caja de busqueda */
 .search-box {
   display: flex;
   align-items: center;
@@ -239,7 +231,6 @@
   color: #6b7280;
 }
 
-/* Categories Grid */
 .categories-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -291,7 +282,7 @@
   background-color: #e5e7eb;
 }
 
-/* Reports */
+/* Reportes */
 .reports-grid {
   display: grid;
   gap: 2rem;
@@ -338,7 +329,7 @@
   color: #2c5282;
 }
 
-/* Profile */
+/* Perfil */
 .profile-container {
   background: white;
   padding: 2rem;
@@ -414,7 +405,6 @@
   margin-bottom: 1rem;
 }
 
-/* Product Thumbnail */
 .product-thumbnail {
   width: 60px;
   height: 60px;
@@ -422,10 +412,9 @@
   border-radius: 4px;
 }
 
-/* Add Form Container (for AddUserForm, AddCategoryForm, etc.) */
 .add-form-container {
-  display: block; /* Ensure it's not hidden by default */
-  background-color: white; /* Make sure it has a background */
+  display: block; 
+  background-color: white; 
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -459,18 +448,18 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
-  box-sizing: border-box; /* Ensure padding doesn't increase width */
+  box-sizing: border-box; 
 }
 
 .add-form select {
-  -webkit-appearance: none; /* Remove default arrow on select */
+  -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
   background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M287%2C118.8L146.2%2C259.4L5.4%2C118.8z%22%2F%3E%3C%2Fsvg%3E'); /* Custom arrow */
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
   background-size: 0.625rem;
-  padding-right: 2.5rem; /* Space for the custom arrow */
+  padding-right: 2.5rem; 
 }
 
 

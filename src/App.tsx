@@ -1,9 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
-// Header and Footer will be managed by layouts
-// import { Header } from './components/Header';
-// import { Footer } from './components/Footer';
+// Header and Footer va a ser administrado a través de los layouts
 
 import { MainLayout } from './layouts/MainLayout';
 import { AdminLayout } from './layouts/AdminLayout';
@@ -20,10 +18,10 @@ import { Profile } from './pages/Profile';
 import { ProductDetails } from './pages/ProductDetails';
 import { BlogPostDetails } from './pages/BlogPostDetails';
 import { NotFoundPage as NotFound } from './pages/404';
-import { ChangePassword } from './pages/ChangePassword'; // Import ChangePassword component
-import { PurchasesPage } from './pages/Purchases'; // Import PurchasesPage component
+import { ChangePassword } from './pages/ChangePassword'; 
+import { PurchasesPage } from './pages/Purchases'; 
 
-// Admin Pages
+// Paginas Admin
 import { DashboardPage as AdminDashboard } from './pages/admin/Dashboard';
 import { OrdersPage as AdminOrders } from './pages/admin/Orders';
 import { ProductsPage as AdminProducts } from './pages/admin/Products';
@@ -39,10 +37,10 @@ function App() {
     <AuthProvider>
       <CartProvider>
         <Router>
-          {/* Header and Footer are now managed by MainLayout and AdminLayout */}
+          {/* Header and Footer son administrados a través de MainLayout and AdminLayout */}
           <Routes>
             <Route path="/" element={<MainLayout />}>
-              <Route index element={<Landing />} /> {/* Render Landing on / */}
+              <Route index element={<Landing />} /> 
               <Route path="about" element={<About />} />
               <Route path="contact" element={<Contact />} />
               <Route path="blog" element={<Blog />} />
@@ -57,7 +55,7 @@ function App() {
               <Route path="product/:slug" element={<ProductDetails />} />
             </Route>
 
-            {/* Admin Routes */}
+            {/* Rutas de Admin */}
             <Route path="/admin" element={<AdminLayout />}>
               <Route path="dashboard" element={<AdminDashboard />} />
               <Route path="orders" element={<AdminOrders />} />

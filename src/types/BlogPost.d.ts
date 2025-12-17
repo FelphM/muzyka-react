@@ -4,7 +4,7 @@ export type Post = {
   bannerAlt?: string;
   cardTitle: string;
   cardAuthor?: string;
-  cardDate: string; // Using string for date to simplify serialization
+  cardDate: string; 
   cardBrief?: string;
   postTitle: string;
   postContent?: string;

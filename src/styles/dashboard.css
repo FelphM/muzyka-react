@@ -7,7 +7,7 @@
 .dashboard-content {
   flex: 1;
   padding: 2rem;
-  margin-left: 200px; /* Match sidebar width */
+  margin-left: 200px; 
 }
 
 .dashboard-content h1 {
@@ -33,7 +33,6 @@
   font-size: 1.25rem;
 }
 
-/* Sales Overview */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -57,7 +56,6 @@
   color: #2c5282;
 }
 
-/* Recent Orders */
 .orders-list {
   margin-bottom: 1rem;
 }
@@ -86,7 +84,6 @@
   color: #065f46;
 }
 
-/* Popular Products */
 .products-list {
   margin-bottom: 1rem;
 }
@@ -104,7 +101,6 @@
   font-size: 0.875rem;
 }
 
-/* Quick Actions */
 .actions-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -134,7 +130,6 @@
   margin-bottom: 0.5rem;
 }
 
-/* View More Links */
 .view-more {
   display: block;
   text-align: right;

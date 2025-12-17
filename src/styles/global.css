@@ -35,7 +35,6 @@ input:disabled {
   padding: 10px;
 }
 
-/* Primary Button Style */
 .primaryButton {
   padding: 0.75rem 1.5rem;
   font-size: 1.1rem;
@@ -51,7 +50,6 @@ input:disabled {
   background-color: #d81d1d;
 }
 
-/* Secondary Button Style */
 .secondaryButton {
   padding: 0.75rem 1.5rem;
   font-size: 1.1rem;
@@ -68,12 +66,11 @@ input:disabled {
   color: white;
 }
 
-/* Quantity Button Style */
 .quantityButton {
   padding: 0.25rem 0.5rem;
   font-size: 1rem;
-  width: 30px; /* Make them square */
-  height: 30px; /* Make them square */
+  width: 30px; 
+  height: 30px; 
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: #f0f0f0;

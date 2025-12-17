@@ -20,7 +20,6 @@ export function UsersPage() {
       setUsers(data);
     } catch (error) {
       console.error("Error fetching users:", error);
-      // Optionally, set users to empty array or display an error message
       setUsers([]);
     }
   };
@@ -28,13 +27,13 @@ export function UsersPage() {
   const handleSubmitUser = async (userData: User) => {
     try {
       if (editingUser) {
-        // Update existing user
+        // Update usuario existente
         const updated = await updateUser(editingUser.id as number, userData);
         setUsers((prevUsers) =>
           prevUsers.map((u) => (u.id === updated.id ? updated : u))
         );
       } else {
-        // Add new user
+        // Añadir nuevo usuario
         const newlyAddedUser = await createUser(userData);
         setUsers((prevUsers) => [...prevUsers, newlyAddedUser]);
       }

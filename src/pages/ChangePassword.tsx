@@ -2,8 +2,8 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { changePassword } from '../services/api'; // Assuming this API function will be created
-import '../styles/forms.css'; // Reusing existing form styles
+import { changePassword } from '../services/api'; 
+import '../styles/forms.css'; 
 
 export function ChangePassword() {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -12,7 +12,7 @@ export function ChangePassword() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const navigate = useNavigate();
-  const { user } = useAuth(); // To get user details, if needed by the API
+  const { user } = useAuth(); 
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -30,10 +30,9 @@ export function ChangePassword() {
     }
 
     try {
-      // Call the API to change password
+      // Llamada API Para cambiar la contraseña
       await changePassword(user.email, currentPassword, newPassword);
       setSuccess('Password changed successfully!');
-      // Optionally, navigate back to profile or home after a delay
       setTimeout(() => {
         navigate('/profile');
       }, 2000);

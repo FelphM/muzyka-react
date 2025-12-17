@@ -27,7 +27,7 @@ export function ReportsPage() {
       try {
         const orders: PurchaseOrder[] = await getAllOrders();
         
-        // Calculate Sales Data by month
+        // Calcular ventas por mes
         const monthlySales: { [key: string]: { revenue: number, ordersCount: number } } = {};
 
         orders.forEach(order => {
@@ -51,7 +51,7 @@ export function ReportsPage() {
 
         setSalesData(salesDataArray);
 
-        // Calculate Top Selling Products
+        // Calcular productos más vendidos
         const productSales: { [key: string]: { id: string, name: string, sales: number, revenue: number } } = {};
         orders.forEach(order => {
           order.items.forEach(item => {
@@ -84,10 +84,10 @@ export function ReportsPage() {
   }, []);
 
   const handleExportReport = () => {
-    // Prepare CSV content
+    // Preparar contenido CSV
     let csvContent = 'data:text/csv;charset=utf-8,';
     
-    // Add Sales Overview section
+    // Añadir sección de Resumen de Ventas
     csvContent += 'SALES OVERVIEW\n';
     csvContent += 'Period,Revenue,Orders,Average Order Value\n';
     
@@ -95,7 +95,6 @@ export function ReportsPage() {
       csvContent += `"${data.period}",${data.revenue.toFixed(2)},${data.orders},${data.averageOrder.toFixed(2)}\n`;
     });
     
-    // Add empty line and Top Products section
     csvContent += '\n\nTOP SELLING PRODUCTS\n';
     csvContent += 'Product,Units Sold,Revenue\n';
     
@@ -103,17 +102,15 @@ export function ReportsPage() {
       csvContent += `"${product.name}",${product.sales},${product.revenue.toFixed(2)}\n`;
     });
     
-    // Create download link
+    // Crear enlace de descarga
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement('a');
     link.setAttribute('href', encodedUri);
     link.setAttribute('download', `sales-report-${new Date().toISOString().split('T')[0]}.csv`);
     document.body.appendChild(link);
     
-    // Trigger download
     link.click();
     
-    // Clean up
     document.body.removeChild(link);
   };
 
@@ -165,7 +162,7 @@ export function ReportsPage() {
               </div>
             </div>
 
-            {/* Top Products */}
+            {/* Top Productos */}
             <div className="report-card top-products admin-card">
               <h2>Top Selling Products</h2>
               <div className="table-container">

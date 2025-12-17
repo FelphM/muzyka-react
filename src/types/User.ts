@@ -7,7 +7,7 @@ export type User = {
   city?: string;
   stateProvince?: string;
   postalCode?: string;
-  passwordHash?: string; // Optional, as it won't always be returned or displayed
+  passwordHash?: string; 
   role: 'admin' | 'customer';
   status: 'active' | 'inactive';
   joinDate: string;

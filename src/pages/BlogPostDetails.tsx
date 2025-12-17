@@ -4,7 +4,7 @@ import { FloatingUp } from "../components/FloatingUp";
 import { Breadcrumb } from "../components/Breadcrumb";
 import "../styles/details.css";
 import type { Post } from "../types/BlogPost";
-import { getBlogPostById } from "../services/blogApi"; // Use the real API
+import { getBlogPostById } from "../services/blogApi"; 
 
 export function BlogPostDetails() {
   const { postId } = useParams<{ postId: string }>();
@@ -73,7 +73,6 @@ export function BlogPostDetails() {
           <p>{formatDate(post.cardDate)}</p>
         </div>
         <div className="postContent">
-          {/* Render the string content. Split by newline to create paragraphs */}
           {post.postContent?.split('\n').map((paragraph, index) => (
             <p key={index}>{paragraph}</p>
           ))}

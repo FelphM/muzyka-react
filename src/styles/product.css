@@ -9,21 +9,21 @@
 
 .ProductCard .product-info {
   flex-grow: 1;
-  overflow: hidden; /* Prevent content from overflowing the card */
+  overflow: hidden; 
 }
 
 .product-name {
-  /* Allow up to 2 lines for artist/album name and show ellipsis if longer */
+  
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: normal; /* allow wrapping */
+  white-space: normal; 
 }
 
 .product-description {
-  /* Allow up to 4 lines for description */
+  
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;

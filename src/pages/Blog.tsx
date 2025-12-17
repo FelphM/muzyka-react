@@ -2,9 +2,9 @@ import { useState, useEffect, useCallback } from "react";
 import { FloatingUp } from "../components/FloatingUp";
 import { SearchBar } from "../components/SearchBar";
 import { PostList } from "../components/sets/PostList";
-import BlogForm from "../components/admin/BlogForm"; // Import BlogForm
-import { useAuth } from '../context/AuthContext'; // Import useAuth
-import { getAllBlogPosts, createBlogPost, updateBlogPost, deleteBlogPost } from '../services/blogApi'; // Import blog API
+import BlogForm from "../components/admin/BlogForm"; 
+import { useAuth } from '../context/AuthContext'; 
+import { getAllBlogPosts, createBlogPost, updateBlogPost, deleteBlogPost } from '../services/blogApi'; 
 import type { Post } from '../types/BlogPost';
 import "../styles/blog.css";
 
@@ -53,7 +53,7 @@ export function BlogPage() {
     }
     try {
       await deleteBlogPost(postId);
-      fetchPosts(); // Refresh list
+      fetchPosts(); // Refresca lista
     } catch (err) {
       console.error("Failed to delete post:", err);
       setError("Failed to delete post.");
@@ -69,7 +69,7 @@ export function BlogPage() {
       }
       setShowForm(false);
       setEditingPost(null);
-      fetchPosts(); // Refresh list
+      fetchPosts(); // Refresca lista
     } catch (err) {
       console.error("Failed to save post:", err);
       setError("Failed to save post.");

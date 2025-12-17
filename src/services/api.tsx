@@ -1,4 +1,4 @@
-import type { User } from '../types/User'; // Import User type
+import type { User } from '../types/User'; 
 import { API_BASE_URL, getAuthHeader } from './apiUtils';
 
 interface JwtResponse {
@@ -6,7 +6,7 @@ interface JwtResponse {
   user: User;
 }
 
-// --- Product API Calls ---
+// --- Llamada API Productos ---
 export async function getAllProducts() {
   const response = await fetch(`${API_BASE_URL}/products`);
   if (!response.ok) {
@@ -28,7 +28,7 @@ export async function createProduct(productData: any) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...getAuthHeader(), // Add auth header
+      ...getAuthHeader(), 
     },
     body: JSON.stringify(productData),
   });
@@ -43,7 +43,7 @@ export async function updateProduct(id: number, productData: any) {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      ...getAuthHeader(), // Add auth header
+      ...getAuthHeader(), 
     },
     body: JSON.stringify(productData),
   });
@@ -57,7 +57,7 @@ export async function deleteProduct(id: number) {
   const response = await fetch(`${API_BASE_URL}/products/${id}`, {
     method: "DELETE",
     headers: {
-      ...getAuthHeader(), // Add auth header
+      ...getAuthHeader(), 
     },
   });
   if (!response.ok) {
@@ -66,7 +66,7 @@ export async function deleteProduct(id: number) {
   return response.status;
 }
 
-// --- Category API Calls ---
+// --- Llamada Api Categorias---
 export async function getAllCategories() {
   const response = await fetch(`${API_BASE_URL}/categories`);
   if (!response.ok) {
@@ -84,7 +84,7 @@ export async function getCategoryById(id: number) {
 }
 
 export async function getCategoryByName(name: string) {
-  const response = await fetch(`${API_BASE_URL}/categories/name/${name}`); // Assuming an endpoint for name
+  const response = await fetch(`${API_BASE_URL}/categories/name/${name}`); 
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
@@ -96,7 +96,7 @@ export async function createCategory(categoryData: any) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...getAuthHeader(), // Add auth header
+      ...getAuthHeader(), 
     },
     body: JSON.stringify(categoryData),
   });
@@ -111,7 +111,7 @@ export async function updateCategory(id: number, categoryData: any) {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      ...getAuthHeader(), // Add auth header
+      ...getAuthHeader(), 
     },
     body: JSON.stringify(categoryData),
   });
@@ -125,22 +125,22 @@ export async function deleteCategory(id: number) {
   const response = await fetch(`${API_BASE_URL}/categories/${id}`, {
     method: "DELETE",
     headers: {
-      ...getAuthHeader(), // Add auth header
+      ...getAuthHeader(), 
     },
   });
   if (!response.ok) {
     const error: any = new Error(`HTTP error! status: ${response.status}`);
-    error.response = response; // Attach response to the error object
+    error.response = response; 
     throw error;
   }
   return response.status;
 }
 
-// --- User Management API Calls ---
+// --- Llamada API User Management ---
 export async function getAllUsers() {
   const response = await fetch(`${API_BASE_URL}/users`, {
     headers: {
-      ...getAuthHeader(), // Add auth header
+      ...getAuthHeader(), 
     },
   });
   if (!response.ok) {
@@ -152,7 +152,7 @@ export async function getAllUsers() {
 export async function getUserById(id: number) {
   const response = await fetch(`${API_BASE_URL}/users/${id}`, {
     headers: {
-      ...getAuthHeader(), // Add auth header
+      ...getAuthHeader(), 
     },
   });
   if (!response.ok) {
@@ -166,7 +166,7 @@ export async function createUser(userData: any) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...getAuthHeader(), // Add auth header (Note: for /users POST, this might not always be needed for registration if permitAll, but good for consistency)
+      ...getAuthHeader(), 
     },
     body: JSON.stringify(userData),
   });
@@ -181,7 +181,7 @@ export async function updateUser(id: number, userData: any) {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      ...getAuthHeader(), // Add auth header
+      ...getAuthHeader(), 
     },
     body: JSON.stringify(userData),
   });
@@ -223,7 +223,7 @@ export async function deleteUser(id: number) {
   const response = await fetch(`${API_BASE_URL}/users/${id}`, {
     method: "DELETE",
     headers: {
-      ...getAuthHeader(), // Add auth header
+      ...getAuthHeader(), 
     },
   });
   if (!response.ok) {
@@ -232,7 +232,7 @@ export async function deleteUser(id: number) {
   return response.status;
 }
 
-// --- Order Management API Calls ---
+// --- Llamada API Order Management ---
 export async function createOrder(orderData: { userId: number; items: { productId: number; quantity: number }[] }) {
   const response = await fetch(`${API_BASE_URL}/orders`, {
     method: "POST",

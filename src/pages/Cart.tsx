@@ -35,7 +35,7 @@ const Cart: React.FC = () => {
       await createOrder(orderData);
       alert('Order placed successfully!');
       clearCart();
-      navigate('/purchases'); // Redirect to the purchases page
+      navigate('/purchases'); // Redirecciona a la pagina de compras del usuario
     } catch (error) {
       console.error('Failed to create order:', error);
       alert('There was an error placing your order. Please try again.');

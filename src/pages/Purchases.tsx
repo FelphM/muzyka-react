@@ -3,20 +3,20 @@ import "../styles/purchases.css";
 import { useAuth } from "../context/AuthContext";
 import { getOrdersByUserId } from "../services/api";
 
-// Define DTO types to match backend PurchaseOrderDto
+
 interface OrderItemDto {
   id: number;
   productId: number;
   productName: string;
   quantity: number;
-  price: number; // Assuming this is item price at time of purchase
+  price: number; 
 }
 
 interface PurchaseOrderDto {
   id: number;
   orderDate: string;
   totalPrice: number;
-  status: string; // e.g., "PENDING", "COMPLETED", "SHIPPED"
+  status: string; // ejemplo:. "PENDING", "COMPLETED", "SHIPPED"
   userName: string;
   items: OrderItemDto[];
 }
@@ -41,7 +41,6 @@ export function PurchasesPage() {
           setLoading(false);
         });
     } else if (!user) {
-      // Not logged in, or user object doesn't have an ID
       setLoading(false);
       setError("Please log in to view your purchases.");
     }

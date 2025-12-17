@@ -13,9 +13,7 @@ export function LoginForm() {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     try {
-      await login(email, password); // Use email as email
-      // Check user role and navigate accordingly
-      // Assuming user object is available in useAuth() context after successful login
+      await login(email, password); // Usa email como email
       const loggedInUser = JSON.parse(localStorage.getItem('user') || '{}'); 
       
       if (loggedInUser.role === 'admin') {
