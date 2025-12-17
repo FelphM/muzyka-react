@@ -1,8 +1,10 @@
 import { describe, it, expect, vi } from 'vitest';
 import { screen } from '@testing-library/react';
-import { CartPage } from '../src/pages/Cart';
+import CartPage from '../src/pages/Cart';
 import { renderWithMemoryRouter } from './test-utils';
 import userEvent from '@testing-library/user-event';
+import { useEffect } from 'react';
+import { useCart } from '../src/context/CartContext';
 
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
@@ -13,69 +15,77 @@ vi.mock('react-router-dom', async () => {
 });
 
 describe('CartPage Component', () => {
-  it('should render cart items and shipping form', async () => {
+  // Helper component to initialize cart via context
+  const DemoInitializer = ({ item }: any) => {
+    const { addToCart } = useCart();
+    useEffect(() => {
+      addToCart(item);
+    }, []);
+    return null;
+  };
+
+  const demoItem = {
+    id: 101,
+    name: 'Greatest Hits Collection',
+    artist: 'Rock Legends',
+    format: 'Compact Disc',
+    price: 24.99,
+    imageUrl: '/demo.jpg',
+    imageAlt: 'Demo cover',
+    stock: 5,
+    slug: 'greatest-hits',
+    link: '/product/greatest-hits',
+    category: { id: 1, name: 'Rock', description: 'Rock releases' }
+  };
+
+  it('should render cart items and summary', async () => {
     renderWithMemoryRouter(
-      <CartPage />,
-      { 
-        route: '/cart',
-        initialEntries: ['/cart']
-      }
+      <>
+        <DemoInitializer item={demoItem} />
+        <CartPage />
+      </>,
+      { route: '/cart', initialEntries: ['/cart'] }
     );
-    
+
     // Check if the cart title is rendered
     expect(screen.getByText('Shopping Cart')).toBeDefined();
-    
+
     // Check if the demo item is rendered
-    expect(screen.getByText('Greatest Hits Collection')).toBeDefined();
-    expect(screen.getByText('Artist: Rock Legends')).toBeDefined();
-    expect(screen.getByText('Format: Compact Disc')).toBeDefined();
-    expect(screen.getByText('Price: $24.99')).toBeDefined();
-    
-    // Check if payment form elements are present
-    expect(screen.getByLabelText('Card Number')).toBeDefined();
-    expect(screen.getByLabelText('Card Holder Name')).toBeDefined();
-    expect(screen.getByLabelText('Expiration Date')).toBeDefined();
-    expect(screen.getByLabelText('CVV')).toBeDefined();
+    expect(await screen.findByText(demoItem.name)).toBeDefined();
+    expect(await screen.findByText(`by ${demoItem.artist}`)).toBeDefined();
+    expect(await screen.findByText(`Format: ${demoItem.format}`)).toBeDefined();
+    expect(await screen.findByText(`Price: $${demoItem.price.toFixed(2)}`)).toBeDefined();
   });
 
-  it('should calculate total correctly', () => {
+  it('should calculate total correctly', async () => {
     renderWithMemoryRouter(
-      <CartPage />,
-      { 
-        route: '/cart',
-        initialEntries: ['/cart']
-      }
+      <>
+        <DemoInitializer item={demoItem} />
+        <CartPage />
+      </>,
+      { route: '/cart', initialEntries: ['/cart'] }
     );
-    
+
     // Demo item has price $24.99 and quantity 1
-    expect(screen.getByText('Total: $24.99')).toBeDefined();
+    expect(await screen.findByText(`Subtotal:`)).toBeDefined();
+    expect(await screen.findByText(`$${demoItem.price.toFixed(2)}`)).toBeDefined();
   });
 
-  it('should handle payment form submission', async () => {
+  it('should handle checkout when not logged in', async () => {
     const user = userEvent.setup();
-    
+    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
+
     renderWithMemoryRouter(
-      <CartPage />,
-      { 
-        route: '/cart',
-        initialEntries: ['/cart']
-      }
+      <>
+        <DemoInitializer item={demoItem} />
+        <CartPage />
+      </>,
+      { route: '/cart', initialEntries: ['/cart'] }
     );
-    
-    // Fill out payment form
-    await user.type(screen.getByLabelText('Card Number'), '4111111111111111');
-    await user.type(screen.getByLabelText('Card Holder Name'), 'Test User');
-    await user.type(screen.getByLabelText('Expiration Date'), '12/25');
-    await user.type(screen.getByLabelText('CVV'), '123');
-    await user.type(screen.getByLabelText('Shipping Address'), '123 Test St');
-    await user.type(screen.getByLabelText('City'), 'Test City');
-    await user.type(screen.getByLabelText('ZIP Code'), '12345');
-    
-    // Click the submit button
-    await user.click(screen.getByRole('button', { name: /process payment/i }));
-    
-    // Since the form has required fields and we filled them all,
-    // the form should be valid
-    expect(screen.getByRole('button', { name: /process payment/i })).toBeDefined();
+
+    await user.click(screen.getByRole('button', { name: /Proceed to Checkout/i }));
+
+    expect(alertSpy).toHaveBeenCalledWith('Please log in to proceed to checkout.');
+    alertSpy.mockRestore();
   });
 });

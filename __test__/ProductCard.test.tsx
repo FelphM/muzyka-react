@@ -6,18 +6,18 @@ import type { Product } from '../src/types/Product';
 
 describe('ProductCard Component', () => {
   const mockProduct: Product = {
-    id: "1",
+    id: 1,
     name: "Test Album",
     artist: "Test Artist",
-    image: {
-      src: "/test-image.jpg",
-      alt: "Test Image"
-    },
+    imageUrl: "/test-image.jpg",
+    imageAlt: "Test Image",
     price: 29.99,
     format: "Compact Disc",
     description: "Test description",
     link: "/test-link",
-    slug: "test-album"
+    slug: "test-album",
+    stock: 5,
+    category: { id: 1, name: 'Test', description: 'Test' }
   };
 
   it('should render product information correctly', () => {
@@ -25,7 +25,7 @@ describe('ProductCard Component', () => {
     
     expect(getByText(`${mockProduct.artist} - ${mockProduct.name}`)).toBeDefined();
     expect(getByText(`$${mockProduct.price} | ${mockProduct.format}`)).toBeDefined();
-    expect(getByAltText(mockProduct.image.alt)).toBeDefined();
+    expect(getByAltText(mockProduct.imageAlt)).toBeDefined();
     expect(getByText(mockProduct.description)).toBeDefined();
   });
 
